@@ -14,9 +14,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
+    var splashVC:SplashviewControllerViewController!
+    
+    var navigatorViewController:UINavigationController!
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        window? = UIWindow()
+        splashVC = SplashviewControllerViewController()
+        navigatorViewController = UINavigationController.init(rootViewController: splashVC)
+        navigatorViewController.navigationBar.isHidden = true
+        window?.rootViewController = navigatorViewController
+        
         return true
     }
 
