@@ -21,6 +21,7 @@ class SplashviewControllerViewController: UIViewController {
         }
     }
     func drawBody(){
+        
         view.backgroundColor = UIColor.white
         let valuePro:CGFloat  = CGFloat(NSNumber.getPropotionalValueDevice())
   

@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import FirebaseAuth
+
 enum inputType{
     case keyMail
     case keyPassword
@@ -35,6 +37,10 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         btnBack.addTarget(self, action: #selector(self.goBack), for: UIControlEvents.touchUpInside)
         btnBack.setImage(#imageLiteral(resourceName: "btnDismiss"), for: UIControlState.normal)
         view.addSubview(btnBack)
+        
+//        handle = FIRAuth.auth()?.addStateDidChangeListener() { (auth, user) in
+//            // ...
+//        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -129,6 +135,11 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         contentForm = UIScrollView()
         contentForm.frame =  CGRect(x: (self.view.frame.size.width-320*valuePro)/2, y: 255*valuePro, width: 320*valuePro, height: 314*valuePro)
         
+        let btnTapForm = UIButton()
+        btnTapForm.frame = contentForm.bounds
+        btnTapForm.addTarget(self, action: #selector(self.resignFirstResponderList), for: UIControlEvents.touchUpInside)
+        contentForm.addSubview(btnTapForm)
+        
         let inputMail = UITextField()
         inputMail.frame =  CGRect(x: (contentView.frame.size.width-290*valuePro)/2, y: 0*valuePro, width: 290*valuePro, height: 35*valuePro)
         inputMail.font = UIFont (name: "Avenir-Light", size: 13*valuePro)
@@ -183,6 +194,9 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     override var prefersStatusBarHidden: Bool {
         return true
     }
+    override func viewWillDisappear(_ animated: Bool) {
+        resignFirstResponderList()
+    }
     func goBack(sender: UIButton!) {
         
         self.dismiss(animated: true, completion: nil)
@@ -196,14 +210,15 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         })
 
     }
-    // MARK: - 
+    // MARK: - UITextField
     public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        let valuePro:CGFloat  = CGFloat(NSNumber.getPropotionalValueDevice())
         switch textField.tag {
         case inputType.keyMail.hashValue:
             self.contentForm.contentOffset.y = 0
             break
         case inputType.keyPassword.hashValue:
-            self.contentForm.contentOffset.y = 35
+            self.contentForm.contentOffset.y = 35*valuePro
             break
         default:
             return true
@@ -211,9 +226,10 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         return true
     }
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        let valuePro:CGFloat  = CGFloat(NSNumber.getPropotionalValueDevice())
         switch textField.tag {
         case inputType.keyMail.hashValue:
-            self.contentForm.contentOffset.y = 35
+            self.contentForm.contentOffset.y = 35*valuePro
             let inputText:UITextField = self.inputList[inputType.keyPassword.hashValue] as! UITextField
             inputText.becomeFirstResponder()
             break
@@ -225,5 +241,13 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             return true
         }
         return true
+    }
+    func resignFirstResponderList(){
+
+        for inputUX in self.inputList {
+            let inputTxt = inputUX as! UITextField
+            inputTxt.resignFirstResponder()
+        }
+        self.contentForm.contentOffset.y = 0
     }
 }

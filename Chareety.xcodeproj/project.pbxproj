@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1B4A0B7A1E1C70BC005AD307 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4A0B791E1C70BC005AD307 /* Storage.swift */; };
+		1BA93C991E1DAC960063B31F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1BA93C981E1DAC960063B31F /* GoogleService-Info.plist */; };
 		3B4629BFCDFA02B724797BC2 /* Pods_Chareety.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2F2E659E500A1D96EF4909A /* Pods_Chareety.framework */; };
 		F007ADD91E0CC81200688239 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F007ADD81E0CC81200688239 /* AppDelegate.swift */; };
 		F007ADDB1E0CC81200688239 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F007ADDA1E0CC81200688239 /* ViewController.swift */; };
@@ -36,6 +37,7 @@
 /* Begin PBXFileReference section */
 		176D4AD7AF9AF3A0074DF690 /* Pods-Chareety.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chareety.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Chareety/Pods-Chareety.debug.xcconfig"; sourceTree = "<group>"; };
 		1B4A0B791E1C70BC005AD307 /* Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		1BA93C981E1DAC960063B31F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5B276AEE7F58A66FCACBA359 /* Pods-Chareety.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chareety.release.xcconfig"; path = "Pods/Target Support Files/Pods-Chareety/Pods-Chareety.release.xcconfig"; sourceTree = "<group>"; };
 		B2F2E659E500A1D96EF4909A /* Pods_Chareety.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Chareety.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F007ADD51E0CC81100688239 /* Chareety.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chareety.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -116,6 +118,7 @@
 		F007ADD71E0CC81100688239 /* Chareety */ = {
 			isa = PBXGroup;
 			children = (
+				1BA93C981E1DAC960063B31F /* GoogleService-Info.plist */,
 				F007ADED1E0CD18000688239 /* Resource */,
 				F007ADEF1E0CD18000688239 /* Source */,
 				F007ADD81E0CC81200688239 /* AppDelegate.swift */,
@@ -333,6 +336,7 @@
 				F007ADDE1E0CC81200688239 /* Main.storyboard in Resources */,
 				F007ADF61E0CD18000688239 /* MediaSplash.xcassets in Resources */,
 				F093B5151E1BC08300924FF0 /* MediaItems.xcassets in Resources */,
+				1BA93C991E1DAC960063B31F /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

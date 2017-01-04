@@ -7,13 +7,20 @@
 //
 
 import UIKit
+enum inputRegisterType{
+    case keyRegisterMail
+    case keyRegisterName
+    case keyRegisterBirthday
+    case keyRegisterPassword
+}
 protocol RegisterViewControllerDelegate {
     func dissmisCompletedLoadLogInVC()
 }
-class RegisterViewController: UIViewController {
+class RegisterViewController: UIViewController, UITextFieldDelegate {
 
     var delegate:RegisterViewControllerDelegate?
-    var contentForm:UIView!
+    var contentForm:UIScrollView!
+    var inputRegisterList:NSMutableArray = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -122,6 +129,11 @@ class RegisterViewController: UIViewController {
         contentForm = UIScrollView()
         contentForm.frame =  CGRect(x: (self.view.frame.size.width-320*valuePro)/2, y: 255*valuePro, width: 320*valuePro, height: 314*valuePro)
         
+        let btnTapForm = UIButton()
+        btnTapForm.frame = contentForm.bounds
+        btnTapForm.addTarget(self, action: #selector(self.resignFirstResponderList), for: UIControlEvents.touchUpInside)
+        contentForm.addSubview(btnTapForm)
+        
         let inputMail = UITextField()
         inputMail.frame =  CGRect(x: (contentView.frame.size.width-290*valuePro)/2, y: 0*valuePro, width: 290*valuePro, height: 35*valuePro)
         inputMail.font = UIFont (name: "Avenir-Light", size: 13*valuePro)
@@ -132,7 +144,12 @@ class RegisterViewController: UIViewController {
         inputMail.layer.borderWidth = 1
         inputMail.textAlignment = NSTextAlignment.center
         inputMail.layer.cornerRadius = inputMail.frame.size.height/2
+        inputMail.tag = inputRegisterType.keyRegisterMail.hashValue
+        inputMail.delegate = self
+        inputMail.keyboardType = UIKeyboardType.emailAddress
+        inputMail.returnKeyType = UIReturnKeyType.next
         contentForm.addSubview(inputMail)
+        inputRegisterList.add(inputMail)
         
         let inputName = UITextField()
         inputName.frame =  CGRect(x: (contentView.frame.size.width-290*valuePro)/2, y: 52*valuePro, width: 290*valuePro, height: 35*valuePro)
@@ -144,7 +161,12 @@ class RegisterViewController: UIViewController {
         inputName.layer.borderWidth = 1
         inputName.textAlignment = NSTextAlignment.center
         inputName.layer.cornerRadius = inputName.frame.size.height/2
+        inputName.tag = inputRegisterType.keyRegisterName.hashValue
+        inputName.delegate = self
+        inputName.keyboardType = UIKeyboardType.default
+        inputName.returnKeyType = UIReturnKeyType.next
         contentForm.addSubview(inputName)
+        inputRegisterList.add(inputName)
         
         let inputBirthday = UITextField()
         inputBirthday.frame =  CGRect(x: (contentView.frame.size.width-290*valuePro)/2, y: 52*2*valuePro, width: 290*valuePro, height: 35*valuePro)
@@ -156,7 +178,12 @@ class RegisterViewController: UIViewController {
         inputBirthday.layer.borderWidth = 1
         inputBirthday.textAlignment = NSTextAlignment.center
         inputBirthday.layer.cornerRadius = inputBirthday.frame.size.height/2
+        inputBirthday.tag = inputRegisterType.keyRegisterBirthday.hashValue
+        inputBirthday.delegate = self
+        inputBirthday.keyboardType = UIKeyboardType.numberPad
+        inputBirthday.returnKeyType = UIReturnKeyType.next
         contentForm.addSubview(inputBirthday)
+        inputRegisterList.add(inputBirthday)
         
         let inputPassword = UITextField()
         inputPassword.frame =  CGRect(x: (contentView.frame.size.width-290*valuePro)/2, y: 52*3*valuePro, width: 290*valuePro, height: 35*valuePro)
@@ -169,7 +196,10 @@ class RegisterViewController: UIViewController {
         inputPassword.textAlignment = NSTextAlignment.center
         inputPassword.layer.cornerRadius = inputPassword.frame.size.height/2
         inputPassword.isSecureTextEntry = true
+        inputPassword.tag = inputRegisterType.keyRegisterPassword.hashValue
+        inputPassword.delegate = self
         contentForm.addSubview(inputPassword)
+        inputRegisterList.add(inputPassword)
         
         let btnCreateAccount = UIButton()
         btnCreateAccount.frame =  CGRect(x: (self.view.frame.size.width-290*valuePro)/2, y: 52*4*valuePro, width: 290*valuePro, height: 35*valuePro)
@@ -189,7 +219,9 @@ class RegisterViewController: UIViewController {
     override var prefersStatusBarHidden: Bool {
         return true
     }
-    
+    override func viewWillDisappear(_ animated: Bool) {
+        resignFirstResponderList()
+    }
     func goBack(sender: UIButton!) {
         
         self.dismiss(animated: true, completion: nil)
@@ -202,4 +234,61 @@ class RegisterViewController: UIViewController {
         })
         
     }
-   }
+    // MARK: - UITextField
+    public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        let valuePro:CGFloat  = CGFloat(NSNumber.getPropotionalValueDevice())
+        switch textField.tag {
+        case inputRegisterType.keyRegisterMail.hashValue:
+            self.contentForm.contentOffset.y = 0
+            break
+        case inputRegisterType.keyRegisterName.hashValue:
+            self.contentForm.contentOffset.y = 35*valuePro*1
+            break
+        case inputRegisterType.keyRegisterBirthday.hashValue:
+            self.contentForm.contentOffset.y = 35*valuePro*2
+            break
+        case inputRegisterType.keyRegisterPassword.hashValue:
+            self.contentForm.contentOffset.y = 35*valuePro*3
+            break
+        default:
+            return true
+        }
+        return true
+    }
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        let valuePro:CGFloat  = CGFloat(NSNumber.getPropotionalValueDevice())
+        switch textField.tag {
+        case inputRegisterType.keyRegisterMail.hashValue:
+            self.contentForm.contentOffset.y = 35*valuePro*1
+            let inputText:UITextField = self.inputRegisterList[inputRegisterType.keyRegisterName.hashValue] as! UITextField
+            inputText.becomeFirstResponder()
+            break
+        case inputRegisterType.keyRegisterName.hashValue:
+            self.contentForm.contentOffset.y = 35*valuePro*2
+            let inputText:UITextField = self.inputRegisterList[inputRegisterType.keyRegisterBirthday.hashValue] as! UITextField
+            inputText.becomeFirstResponder()
+            break
+        case inputRegisterType.keyRegisterBirthday.hashValue:
+            self.contentForm.contentOffset.y = 35*valuePro*3
+            let inputText:UITextField = self.inputRegisterList[inputRegisterType.keyRegisterPassword.hashValue] as! UITextField
+            inputText.becomeFirstResponder()
+            break
+        case inputRegisterType.keyRegisterPassword.hashValue:
+            self.contentForm.contentOffset.y = 0
+            textField.resignFirstResponder()
+            break
+        default:
+            return true
+        }
+        return true
+    }
+    func resignFirstResponderList(){
+        
+        for inputUX in self.inputRegisterList {
+            let inputTxt = inputUX as! UITextField
+            inputTxt.resignFirstResponder()
+        }
+        self.contentForm.contentOffset.y = 0
+    }
+
+}
