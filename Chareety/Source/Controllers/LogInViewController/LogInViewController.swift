@@ -7,13 +7,19 @@
 //
 
 import UIKit
-protocol LogInViewControllerDelegate {
-    func dissmisCompletedLogInVC()
+enum inputType{
+    case keyMail
+    case keyPassword
+    
 }
-class LogInViewController: UIViewController {
+protocol LogInViewControllerDelegate {
+    func dissmisCompletedLoadRegisterVC()
+}
+class LogInViewController: UIViewController, UITextFieldDelegate {
     
     var delegate:LogInViewControllerDelegate?
     var contentForm:UIScrollView!
+    var inputList:NSMutableArray = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,13 +57,13 @@ class LogInViewController: UIViewController {
         lblTitle.text = "Iniciar Sesion"
         lblTitle.textAlignment = NSTextAlignment.center
         
-        let btnSigIn = UIButton()
-        btnSigIn.frame =  CGRect(x: (contentView.frame.size.width-290*valuePro)/2, y: 37*valuePro, width: 290*valuePro, height: 35*valuePro)
-        btnSigIn.titleLabel?.font = UIFont (name: "Avenir-Light", size: 13*valuePro)
+        let btnRegister = UIButton()
+        btnRegister.frame =  CGRect(x: (contentView.frame.size.width-290*valuePro)/2, y: 37*valuePro, width: 290*valuePro, height: 35*valuePro)
+        btnRegister.titleLabel?.font = UIFont (name: "Avenir-Light", size: 13*valuePro)
         
-        btnSigIn.layer.cornerRadius = btnSigIn.frame.size.height/2
-        btnSigIn.backgroundColor = UIColor.clear
-        btnSigIn.setTitleColor(UIColor.init(hexString: "303030"), for: .normal)
+        btnRegister.layer.cornerRadius = btnRegister.frame.size.height/2
+        btnRegister.backgroundColor = UIColor.clear
+        btnRegister.setTitleColor(UIColor.init(hexString: "303030"), for: .normal)
         
         let myMutableString = NSMutableAttributedString(
             string: "¿No tienes cuenta? Registrese",
@@ -75,7 +81,8 @@ class LogInViewController: UIViewController {
         myMutableString.addAttributes([NSForegroundColorAttributeName:UIColor.init(hexString: "FF151F")],range: rangeB)
         
         
-        btnSigIn.setAttributedTitle(myMutableString, for: UIControlState.normal)
+        btnRegister.setAttributedTitle(myMutableString, for: UIControlState.normal)
+        btnRegister.addTarget(self, action: #selector(self.goRegister), for: UIControlEvents.touchUpInside)
         
         let btnFacebook = UIButton()
         btnFacebook.frame =  CGRect(x: (self.view.frame.size.width-290*valuePro)/2, y: 78*valuePro, width: 290*valuePro, height: 35*valuePro)
@@ -113,7 +120,7 @@ class LogInViewController: UIViewController {
         
         view.addSubview(contentView)
         contentView.addSubview(lblTitle)
-        contentView.addSubview(btnSigIn)
+        contentView.addSubview(btnRegister)
         contentView.addSubview(btnFacebook)
         contentView.addSubview(btnTwitter)
         contentView.addSubview(btnGoogle)
@@ -132,7 +139,13 @@ class LogInViewController: UIViewController {
         inputMail.layer.borderWidth = 1
         inputMail.textAlignment = NSTextAlignment.center
         inputMail.layer.cornerRadius = inputMail.frame.size.height/2
+        inputMail.tag = inputType.keyMail.hashValue;
+        inputMail.keyboardType = UIKeyboardType.emailAddress
+        inputMail.returnKeyType = UIReturnKeyType.continue
+        inputMail.delegate = self
         contentForm.addSubview(inputMail)
+        
+        inputList.add(inputMail)
         
         let inputPassword = UITextField()
         inputPassword.frame =  CGRect(x: (contentView.frame.size.width-290*valuePro)/2, y: 52*valuePro, width: 290*valuePro, height: 35*valuePro)
@@ -145,7 +158,14 @@ class LogInViewController: UIViewController {
         inputPassword.textAlignment = NSTextAlignment.center
         inputPassword.layer.cornerRadius = inputPassword.frame.size.height/2
         inputPassword.isSecureTextEntry = true
+        inputPassword.tag = inputType.keyPassword.hashValue;
+        inputPassword.delegate = self
+        inputPassword.keyboardType = UIKeyboardType.default
+        inputPassword.returnKeyType = UIReturnKeyType.done
+        
         contentForm.addSubview(inputPassword)
+        
+        inputList.add(inputPassword)
         
         let btnEnter = UIButton()
         btnEnter.frame =  CGRect(x: (self.view.frame.size.width-290*valuePro)/2, y: 52*4*valuePro, width: 290*valuePro, height: 35*valuePro)
@@ -158,15 +178,52 @@ class LogInViewController: UIViewController {
         contentForm.addSubview(btnEnter)
         
         view.addSubview(contentForm)
-        
-        
+
     }
     override var prefersStatusBarHidden: Bool {
         return true
     }
     func goBack(sender: UIButton!) {
-
+        
         self.dismiss(animated: true, completion: nil)
+        
+    }
+    func goRegister(sender: UIButton!) {
 
+        self.dismiss(animated: false, completion: {
+            self.contentForm = nil
+            self.delegate?.dissmisCompletedLoadRegisterVC()
+        })
+
+    }
+    // MARK: - 
+    public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        switch textField.tag {
+        case inputType.keyMail.hashValue:
+            self.contentForm.contentOffset.y = 0
+            break
+        case inputType.keyPassword.hashValue:
+            self.contentForm.contentOffset.y = 35
+            break
+        default:
+            return true
+        }
+        return true
+    }
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        switch textField.tag {
+        case inputType.keyMail.hashValue:
+            self.contentForm.contentOffset.y = 35
+            let inputText:UITextField = self.inputList[inputType.keyPassword.hashValue] as! UITextField
+            inputText.becomeFirstResponder()
+            break
+        case inputType.keyPassword.hashValue:
+            self.contentForm.contentOffset.y = 0
+            textField.resignFirstResponder()
+            break
+        default:
+            return true
+        }
+        return true
     }
 }

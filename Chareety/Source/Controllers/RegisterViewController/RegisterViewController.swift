@@ -8,7 +8,7 @@
 
 import UIKit
 protocol RegisterViewControllerDelegate {
-    func dissmisCompletedRegisterVC()
+    func dissmisCompletedLoadLogInVC()
 }
 class RegisterViewController: UIViewController {
 
@@ -73,9 +73,9 @@ class RegisterViewController: UIViewController {
         let rangeB:NSRange = atributes.range(of:"Iniciar Sesion")
         
         myMutableString.addAttributes([NSForegroundColorAttributeName:UIColor.init(hexString: "00AFF1")],range: rangeB)
-        
-        
+
         btnSigIn.setAttributedTitle(myMutableString, for: UIControlState.normal)
+        btnSigIn.addTarget(self, action: #selector(self.goLogIn), for: UIControlEvents.touchUpInside)
         
         let btnFacebook = UIButton()
         btnFacebook.frame =  CGRect(x: (self.view.frame.size.width-290*valuePro)/2, y: 78*valuePro, width: 290*valuePro, height: 35*valuePro)
@@ -185,12 +185,21 @@ class RegisterViewController: UIViewController {
 
         
     }
+    
     override var prefersStatusBarHidden: Bool {
         return true
     }
+    
     func goBack(sender: UIButton!) {
         
         self.dismiss(animated: true, completion: nil)
+        
+    }
+    func goLogIn(sender: UIButton!) {
+        
+        self.dismiss(animated: false, completion: {
+            self.delegate?.dissmisCompletedLoadLogInVC()
+        })
         
     }
    }

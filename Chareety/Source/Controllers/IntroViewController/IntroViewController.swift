@@ -8,7 +8,7 @@
 
 import UIKit
 
-class IntroViewController: UIViewController {
+class IntroViewController: UIViewController, RegisterViewControllerDelegate, LogInViewControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,9 +99,7 @@ class IntroViewController: UIViewController {
     override var prefersStatusBarHidden: Bool {
         return true
     }
-    func goRegister(sender: UIButton!) {
-        self.present(RegisterViewController(), animated: true, completion: nil)
-    }
+    
     func goHome(sender: UIButton!) {
         let Item1 = HomeViewController()
         let icon1 = UITabBarItem(title: "", image: #imageLiteral(resourceName: "HomeOffItem"), selectedImage: #imageLiteral(resourceName: "HomeItem"))
@@ -125,8 +123,23 @@ class IntroViewController: UIViewController {
         tabBarVC.tabBar.tintColor = UIColor.init(hexString: "00AFF1")
         self.navigationController?.pushViewController(tabBarVC, animated: true)
     }
+    func goRegister(sender: UIButton!) {
+        let registerVC:RegisterViewController = RegisterViewController()
+        registerVC.delegate = self
+        self.present(registerVC, animated: true, completion: nil)
+    }
     func goLogIn(sender: UIButton!) {
-        self.present(LogInViewController(), animated: true, completion: nil)
+        let logInVC:LogInViewController = LogInViewController()
+        logInVC.delegate = self
+        self.present(logInVC, animated: true, completion: nil)
     }
 
+    // MARK: - LogInViewControllerDelegate
+    func dissmisCompletedLoadRegisterVC(){
+        goRegister(sender: nil)
+    }
+    // MARK: - RegisterViewControllerDelegate
+    func dissmisCompletedLoadLogInVC(){
+        goLogIn(sender: nil)
+    }
 }
