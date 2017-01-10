@@ -23,6 +23,7 @@ class CauseTableViewCell: UITableViewCell {
         self.contentCell.frame = CGRect(x:0*valuePro, y: 10*valuePro, width: 293*valuePro, height: 169*valuePro)
         self.contentCell.layer.borderColor = UIColor.lightGray.cgColor
         self.contentCell.layer.masksToBounds = true
+        self.contentCell.layer.borderWidth = 0.5
         addSubview(self.contentCell)
         
         self.imgBackgroundImage.frame = CGRect(x:0*valuePro, y: 0*valuePro, width: 293*valuePro, height: 132*valuePro)
@@ -52,7 +53,7 @@ class CauseTableViewCell: UITableViewCell {
         btnInfo.setTitleColor(UIColor.white, for: .normal)
         self.contentCell.addSubview(btnInfo)
         
-        self.lblCount.frame =  CGRect(x: 16*valuePro, y: 140*valuePro, width: 211*valuePro, height: 30*valuePro)
+        self.lblCount.frame =  CGRect(x: 16*valuePro, y: 136*valuePro, width: 211*valuePro, height: 30*valuePro)
         self.lblCount.font = UIFont (name: "Avenir-Light", size: 9.5*valuePro)
         self.lblCount.textColor = UIColor.init(hexString: "4d4d4d")
         self.lblCount.textAlignment = NSTextAlignment.left
