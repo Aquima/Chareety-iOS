@@ -302,7 +302,7 @@
 				TargetAttributes = {
 					F007ADD41E0CC81100688239 = {
 						CreatedOnToolsVersion = 8.2;
-						DevelopmentTeam = JBGR56T3X4;
+						DevelopmentTeam = 78GP7VY64H;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -533,7 +533,7 @@
 			baseConfigurationReference = 176D4AD7AF9AF3A0074DF690 /* Pods-Chareety.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = JBGR56T3X4;
+				DEVELOPMENT_TEAM = 78GP7VY64H;
 				INFOPLIST_FILE = Chareety/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -549,7 +549,7 @@
 			baseConfigurationReference = 5B276AEE7F58A66FCACBA359 /* Pods-Chareety.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = JBGR56T3X4;
+				DEVELOPMENT_TEAM = 78GP7VY64H;
 				INFOPLIST_FILE = Chareety/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

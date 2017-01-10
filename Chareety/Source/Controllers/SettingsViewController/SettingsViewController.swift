@@ -31,12 +31,23 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         view.backgroundColor = UIColor.white
         let valuePro:CGFloat  = CGFloat(NSNumber.getPropotionalValueDevice())
         
-        let lblTitle = UILabel()
-        lblTitle.frame =  CGRect(x: (view.frame.size.width-300*valuePro)/2, y: 20*valuePro, width: 300*valuePro, height: 17*valuePro)
-        lblTitle.font = UIFont (name: "Avenir-Light", size: 14.51*valuePro)
-        lblTitle.textColor = UIColor.init(hexString: "4D4D4D")
-        lblTitle.text = "Configuraciones"
-        lblTitle.textAlignment = NSTextAlignment.center
+        let btnEdit = UIButton()
+        btnEdit.frame =  CGRect(x: (self.view.frame.size.width-86.68*valuePro-20*valuePro), y: 31*valuePro, width: 86.68*valuePro, height: 25.6*valuePro)
+        btnEdit.titleLabel?.font = UIFont (name: "Avenir-Light", size: 13*valuePro)
+        btnEdit.setTitle("Editar",for: UIControlState.normal)
+        btnEdit.layer.borderColor = UIColor.black.cgColor
+        btnEdit.layer.cornerRadius = btnEdit.frame.size.height/2
+        btnEdit.backgroundColor = UIColor.init(hexString: "F93D53")
+        btnEdit.setTitleColor(UIColor.white, for: .normal)
+        view.addSubview(btnEdit)
+        
+//        let lblTitle = UILabel()
+//        lblTitle.frame =  CGRect(x: (view.frame.size.width-300*valuePro)/2, y: 20*valuePro, width: 300*valuePro, height: 17*valuePro)
+//        lblTitle.font = UIFont (name: "Avenir-Light", size: 14.51*valuePro)
+//        lblTitle.textColor = UIColor.init(hexString: "4D4D4D")
+//        lblTitle.text = "Configuraciones"
+//        lblTitle.textAlignment = NSTextAlignment.center
+//        view.addSubview(lblTitle)
 
         let imageView = UIImageView(image: #imageLiteral(resourceName: "CharetyAppLogo"))
         
@@ -49,7 +60,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         imageViewProfile.layer.cornerRadius = imageViewProfile.frame.size.height/2
         imageViewProfile.layer.masksToBounds = true
         
-        view.addSubview(lblTitle)
+        
         view.addSubview(imageView)
         view.addSubview(imageViewProfile)
         
@@ -61,8 +72,15 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         btnTapForm.addTarget(self, action: #selector(self.resignFirstResponderList), for: UIControlEvents.touchUpInside)
         contentForm.addSubview(btnTapForm)
         
+        let lblTitleMail = UILabel()
+        lblTitleMail.frame =  CGRect(x: (view.frame.size.width-290*valuePro)/2, y: 0*valuePro, width: 290*valuePro, height: 17*valuePro)
+        lblTitleMail.font = UIFont (name: "Avenir-Light", size: 11*valuePro)
+        lblTitleMail.textColor = UIColor.init(hexString: "808080")
+        lblTitleMail.text = "Correo electronico"
+        contentForm.addSubview(lblTitleMail)
+        
         let inputMail = UITextField()
-        inputMail.frame =  CGRect(x: (contentForm.frame.size.width-290*valuePro)/2, y: 0*valuePro, width: 290*valuePro, height: 35*valuePro)
+        inputMail.frame =  CGRect(x: (contentForm.frame.size.width-290*valuePro)/2, y: lblTitleMail.frame.size.height+5*valuePro , width: 290*valuePro, height: 35*valuePro)
         inputMail.font = UIFont (name: "Avenir-Light", size: 13*valuePro)
         inputMail.textColor = UIColor.init(hexString: "303030")
         inputMail.backgroundColor = UIColor.init(hexString: "F2F2F2")
@@ -78,8 +96,15 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         contentForm.addSubview(inputMail)
         inputSettingsList.add(inputMail)
         
+        let lblTitleName = UILabel()
+        lblTitleName.frame =  CGRect(x: (view.frame.size.width-290*valuePro)/2, y: inputMail.frame.origin.y+inputMail.frame.size.height+5*valuePro, width: 290*valuePro, height: 17*valuePro)
+        lblTitleName.font = UIFont (name: "Avenir-Light", size: 11*valuePro)
+        lblTitleName.textColor = UIColor.init(hexString: "808080")
+        lblTitleName.text = "Nombres"
+        contentForm.addSubview(lblTitleName)
+        
         let inputName = UITextField()
-        inputName.frame =  CGRect(x: (contentForm.frame.size.width-290*valuePro)/2, y: 52*valuePro, width: 290*valuePro, height: 35*valuePro)
+        inputName.frame =  CGRect(x: (contentForm.frame.size.width-290*valuePro)/2, y:  lblTitleName.frame.origin.y+lblTitleName.frame.size.height+5*valuePro, width: 290*valuePro, height: 35*valuePro)
         inputName.font = UIFont (name: "Avenir-Light", size: 13*valuePro)
         inputName.textColor = UIColor.init(hexString: "303030")
         inputName.backgroundColor = UIColor.init(hexString: "F2F2F2")
@@ -95,8 +120,15 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         contentForm.addSubview(inputName)
         inputSettingsList.add(inputName)
         
+        let lblTitleCard = UILabel()
+        lblTitleCard.frame =  CGRect(x: (view.frame.size.width-290*valuePro)/2, y: inputName.frame.origin.y+inputName.frame.size.height+5*valuePro, width: 290*valuePro, height: 17*valuePro)
+        lblTitleCard.font = UIFont (name: "Avenir-Light", size: 11*valuePro)
+        lblTitleCard.textColor = UIColor.init(hexString: "808080")
+        lblTitleCard.text = "Medio de Pago preferido:"
+        contentForm.addSubview(lblTitleCard)
+        
         let inputCard = UITextField()
-        inputCard.frame =  CGRect(x: (contentForm.frame.size.width-290*valuePro)/2, y: 52*2*valuePro, width: 290*valuePro, height: 35*valuePro)
+        inputCard.frame =  CGRect(x: (contentForm.frame.size.width-290*valuePro)/2, y: lblTitleCard.frame.origin.y+lblTitleCard.frame.size.height+5*valuePro, width: 290*valuePro, height: 35*valuePro)
         inputCard.font = UIFont (name: "Avenir-Light", size: 13*valuePro)
         inputCard.textColor = UIColor.init(hexString: "303030")
         inputCard.backgroundColor = UIColor.init(hexString: "F2F2F2")
