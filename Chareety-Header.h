@@ -8,5 +8,5 @@
 
 #ifndef Chareety_Header_h
 #define Chareety_Header_h
-
+#import <SDWebImage/UIImageView+WebCache.h>
 #endif /* Chareety_Header_h */

@@ -206,7 +206,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         btnCreateAccount.titleLabel?.font = UIFont (name: "Avenir-Light", size: 13*valuePro)
         btnCreateAccount.setTitle("Crear mi cuenta",for: UIControlState.normal)
         btnCreateAccount.layer.borderColor = UIColor.black.cgColor
-        btnCreateAccount.layer.cornerRadius = btnGoogle.frame.size.height/2
+        btnCreateAccount.layer.cornerRadius = btnCreateAccount.frame.size.height/2
         btnCreateAccount.backgroundColor = UIColor.init(hexString: "8BCD1F")
         btnCreateAccount.setTitleColor(UIColor.white, for: .normal)
         contentForm.addSubview(btnCreateAccount)

@@ -77,7 +77,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     // MARK: - TableView Delegate
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView:              UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell:CauseTableViewCell = tableView.dequeueReusableCell(withIdentifier: "CauseTableViewCell") as! CauseTableViewCell
         return cell
     }

@@ -7,4 +7,6 @@ target 'Chareety' do
 
   # Pods for Chareety
   pod 'Firebase/Auth'
+  pod 'SDWebImage', '~>3.8'
+  
 end
