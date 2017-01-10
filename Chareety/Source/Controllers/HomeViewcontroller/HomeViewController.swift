@@ -69,7 +69,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         btnActives.layer.borderColor = UIColor.init(hexString: "00AFF1").cgColor
         btnActives.layer.borderWidth = 0.5
         btnActives.setTitleColor(UIColor.white, for: UIControlState.normal)
-        btnActives.setTitle("Activas", for: UIControlState.normal)
+        btnActives.setTitle("Causas Activas", for: UIControlState.normal)
         btnActives.titleLabel?.font = UIFont (name: "Avenir-Light", size: 12*valuePro)
         self.view.addSubview(btnActives)
         
@@ -78,7 +78,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         btnPast.layer.borderWidth = 0.5
         btnPast.layer.borderColor = UIColor.init(hexString: "00AFF1").cgColor
         btnPast.setTitleColor(UIColor.init(hexString: "00AFF1"), for: UIControlState.normal)
-        btnPast.setTitle("Pasadas", for: UIControlState.normal)
+        btnPast.setTitle("Causas Pasadas", for: UIControlState.normal)
         btnPast.titleLabel?.font = UIFont (name: "Avenir-Light", size: 12*valuePro)
         self.view.addSubview(btnPast)
         
