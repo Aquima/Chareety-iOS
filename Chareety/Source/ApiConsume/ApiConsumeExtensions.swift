@@ -27,3 +27,18 @@ extension Dictionary {
     }
     
 }
+extension URLRequest {
+    
+    /// Build string representation of HTTP parameter dictionary of keys and objects
+    ///
+    /// :returns: String representation in the form of key1=value1&key2=value2 where the keys and values are percent escaped
+    
+    mutating func addHeaders(headers:Dictionary< String, String>)  {
+        
+        for (key, value) in headers {
+            self.addValue(value, forHTTPHeaderField: key)
+        }
+
+    }
+    
+}

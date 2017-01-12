@@ -8,7 +8,14 @@
 
 import UIKit
 import Foundation
-
+struct Constants {
+    static let API_KEY = "rKQnkLorXoqiEd49yMejQek6wUPn"
+    static let API_URL = "http://api.chareety.org/v1/"
+}
+struct HTTP_METHOD {
+    static let POST = "POST"
+    static let GET = "GET"
+}
 enum TypeParam {
     case jsonBody
     case urlParams
@@ -59,6 +66,7 @@ class ApiConsume: NSObject{
         //Request
         var request = URLRequest(url: URL(string: urlWithPathString)!)
         request.httpMethod = httpMethod
+        request.addHeaders(headers: headers)
         
         let session:URLSession = URLSession.shared
        // session.configuration = self.configuration!
@@ -69,7 +77,7 @@ class ApiConsume: NSObject{
                     let jsonResult = try JSONSerialization.jsonObject(with: data!, options:
                         JSONSerialization.ReadingOptions.mutableContainers)
                     
-                    print(jsonResult) //this part works fine
+                    print("response: \(jsonResult)") //this part works fine
                     
                   //  print(jsonResult["team1"])
                     

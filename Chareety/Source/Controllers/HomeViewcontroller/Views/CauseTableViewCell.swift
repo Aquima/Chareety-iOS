@@ -69,15 +69,24 @@ class CauseTableViewCell: UITableViewCell {
         
         self.contentCell.addSubview(contentImage)
         
+        let strokeCustom : UIView = UIView()
+        strokeCustom.frame = CGRect(x:189*valuePro, y: 49*valuePro, width: 135*valuePro, height: 135*valuePro)
+        strokeCustom.layer.cornerRadius = strokeCustom.frame.height/2
+        strokeCustom.layer.masksToBounds = true
+        strokeCustom.backgroundColor = UIColor.init(hexString: "8bcd1f")
+        contentImage.addSubview(strokeCustom)
+        
         let maskImage : UIView = UIView()
         maskImage.frame = CGRect(x:210*valuePro, y: 60*valuePro, width: 118*valuePro, height: 118*valuePro)
         maskImage.layer.cornerRadius = maskImage.frame.height/2
         maskImage.layer.masksToBounds = true
         maskImage.backgroundColor = UIColor.red
         contentImage.addSubview(maskImage)
+
+        self.imgArtist.frame = CGRect(x:0*valuePro, y: -10*valuePro, width: 88*valuePro, height: 88*valuePro)
+        maskImage.addSubview(self.imgArtist)
         
-        self.imgArtist.frame = CGRect(x:210*valuePro, y: 60*valuePro, width: 118*valuePro, height: 118*valuePro)
-        
+        self.imgArtist.image = #imageLiteral(resourceName: "userList")
         self.lblTitle.text = "Ayuda a los ninos de las calles del peru\ncon el apoyo de Mario Hart"
         self.lblCount.text = "260 Personas\nabrazaron esta causa"
         self.imgBackgroundImage.image = #imageLiteral(resourceName: "cellBackgroundImage")
