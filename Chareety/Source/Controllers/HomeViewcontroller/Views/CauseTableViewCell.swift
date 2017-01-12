@@ -12,6 +12,7 @@ class CauseTableViewCell: UITableViewCell {
     
     var contentCell : UIView = UIView()
     var imgBackgroundImage : UIImageView = UIImageView()
+    var imgArtist : UIImageView = UIImageView()
     var lblTitle : UILabel = UILabel()
     var lblCount : UILabel = UILabel()
     
@@ -61,6 +62,21 @@ class CauseTableViewCell: UITableViewCell {
         self.lblCount.lineBreakMode = NSLineBreakMode.byWordWrapping
         self.contentCell.addSubview(self.lblCount)
         self.contentCell.addSubview(self.lblCount)
+        
+        let contentImage : UIView = UIView()
+        contentImage.frame = CGRect(x:0*valuePro, y: 0*valuePro, width: 293*valuePro, height: 132*valuePro)
+        contentImage.layer.masksToBounds = true
+        
+        self.contentCell.addSubview(contentImage)
+        
+        let maskImage : UIView = UIView()
+        maskImage.frame = CGRect(x:210*valuePro, y: 60*valuePro, width: 118*valuePro, height: 118*valuePro)
+        maskImage.layer.cornerRadius = maskImage.frame.height/2
+        maskImage.layer.masksToBounds = true
+        maskImage.backgroundColor = UIColor.red
+        contentImage.addSubview(maskImage)
+        
+        self.imgArtist.frame = CGRect(x:210*valuePro, y: 60*valuePro, width: 118*valuePro, height: 118*valuePro)
         
         self.lblTitle.text = "Ayuda a los ninos de las calles del peru\ncon el apoyo de Mario Hart"
         self.lblCount.text = "260 Personas\nabrazaron esta causa"
