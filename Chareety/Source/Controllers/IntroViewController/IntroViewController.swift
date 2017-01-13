@@ -101,27 +101,28 @@ class IntroViewController: UIViewController, RegisterViewControllerDelegate, Log
     }
     
     func goHome(sender: UIButton!) {
-        let Item1 = HomeViewController()
-        let icon1 = UITabBarItem(title: "", image: #imageLiteral(resourceName: "HomeOffItem"), selectedImage: #imageLiteral(resourceName: "HomeItem"))
-        Item1.tabBarItem = icon1
-        
-        let Item2 = ProfileViewController()
-        let icon2 = UITabBarItem(title: "", image: #imageLiteral(resourceName: "ProfileOffItem"), selectedImage: #imageLiteral(resourceName: "ProfileItem"))
-        Item2.tabBarItem = icon2
-        
-        let Item3 = TermsAndContditionsViewController()
-        let icon3 = UITabBarItem(title: "", image: #imageLiteral(resourceName: "TermsOffItem"), selectedImage: #imageLiteral(resourceName: "TermsItem"))
-        Item3.tabBarItem = icon3
-        
-        let Item4 = SettingsViewController()
-        let icon4 = UITabBarItem(title: "", image: #imageLiteral(resourceName: "SettingOffItem"), selectedImage: #imageLiteral(resourceName: "SettingItem"))
-        Item4.tabBarItem = icon4
-        
-        let tabBarVC:UITabBarController = UITabBarController()
-        tabBarVC.viewControllers = [Item1,Item2,Item3,Item4]
-        tabBarVC.tabBar.backgroundColor = UIColor.clear
-        tabBarVC.tabBar.tintColor = UIColor.init(hexString: "00AFF1")
-        self.navigationController?.pushViewController(tabBarVC, animated: true)
+        getCauses(page: "1", count: "20")
+//        let Item1 = HomeViewController()
+//        let icon1 = UITabBarItem(title: "", image: #imageLiteral(resourceName: "HomeOffItem"), selectedImage: #imageLiteral(resourceName: "HomeItem"))
+//        Item1.tabBarItem = icon1
+//        
+//        let Item2 = ProfileViewController()
+//        let icon2 = UITabBarItem(title: "", image: #imageLiteral(resourceName: "ProfileOffItem"), selectedImage: #imageLiteral(resourceName: "ProfileItem"))
+//        Item2.tabBarItem = icon2
+//        
+//        let Item3 = TermsAndContditionsViewController()
+//        let icon3 = UITabBarItem(title: "", image: #imageLiteral(resourceName: "TermsOffItem"), selectedImage: #imageLiteral(resourceName: "TermsItem"))
+//        Item3.tabBarItem = icon3
+//        
+//        let Item4 = SettingsViewController()
+//        let icon4 = UITabBarItem(title: "", image: #imageLiteral(resourceName: "SettingOffItem"), selectedImage: #imageLiteral(resourceName: "SettingItem"))
+//        Item4.tabBarItem = icon4
+//        
+//        let tabBarVC:UITabBarController = UITabBarController()
+//        tabBarVC.viewControllers = [Item1,Item2,Item3,Item4]
+//        tabBarVC.tabBar.backgroundColor = UIColor.clear
+//        tabBarVC.tabBar.tintColor = UIColor.init(hexString: "00AFF1")
+//        self.navigationController?.pushViewController(tabBarVC, animated: true)
     }
     func goRegister(sender: UIButton!) {
         let registerVC:RegisterViewController = RegisterViewController()
@@ -142,4 +143,20 @@ class IntroViewController: UIViewController, RegisterViewControllerDelegate, Log
     func dissmisCompletedLoadLogInVC(){
         goLogIn(sender: nil)
     }
+    // MARK: - API Consume
+    
+    func getCauses(page:String , count:String){
+
+        var params:Dictionary <String,String> = Dictionary()
+        params["p"] = page
+        params["c"] = count
+    
+        var headers:Dictionary <String,String> = Dictionary()
+        headers["Content-Type"] = "application/json"
+        headers["Api-key"] = Constants.API_KEY
+
+        ApiConsume.sharedInstance.consumeDataWithNewSession(url: "listar", path: Constants.API_URL, headers: headers, params: params, typeParams: TypeParam.urlParams, httpMethod: HTTP_METHOD.GET, notificationName: "endCauses")
+        
+    }
+
 }
