@@ -6,7 +6,7 @@
 //
 import UIKit
 import CoreData
-
+import Foundation
 /// NSPersistentStoreCoordinator extension
 extension NSPersistentStoreCoordinator {
     
@@ -128,6 +128,59 @@ struct Storage {
             }
         } catch let error as NSError {
             print("Detele all data in \(entity) error : \(error) \(error.userInfo)")
+        }
+    }
+    // MARK: - SAVE
+    func saveCauseForId(uid:String,nameEntity:String,item:Dictionary<String, String>) -> (EntityCause, Bool){
+   
+        let moc =  Storage.shared.context
+        let benefitFetch = NSFetchRequest<NSFetchRequestResult>(entityName: nameEntity)
+        benefitFetch.predicate = NSPredicate(format: "id == %@", uid)
+        do {
+            
+            let list = try moc.fetch(benefitFetch) as! [EntityCause]
+            if list.count > 0 {
+                //no created
+                let currentEntity:EntityCause = list.last!
+                return (currentEntity,true)
+            }else{
+                //create now
+                var currentEntity:EntityCause!
+                if #available(iOS 10.0, *) {
+                    currentEntity = EntityCause(context: Storage.shared.context)
+                } else {
+                    // Fallback on earlier versions
+                    let entityDescription = NSEntityDescription.entity(forEntityName: nameEntity,
+                                                                       in: Storage.shared.context)
+                    currentEntity = EntityCause(entity: entityDescription!,
+                                                   insertInto: Storage.shared.context)
+                }
+                //save data
+                currentEntity.id = uid
+                currentEntity.title = item["title"]
+                currentEntity.urlImageCause = item["url_image_cause"]
+                currentEntity.type = Int16(item["type"]!)!
+                currentEntity.total = item["total"]
+                currentEntity.accumulated = Int32(item["Accumulated"]!)!
+                currentEntity.percent = Double(item["percent"]!)!
+                currentEntity.urlImageAmbassador = item["url_image_ambassador"]
+                currentEntity.people = Int32(item["people"]!)!
+                currentEntity.nameAbassador = item["name_ambassador"]
+                
+                let moc =  Storage.shared.context
+                
+                do {
+                    try moc.save()
+                    return (currentEntity,false)
+                } catch {
+                    
+                    let nserror = error as NSError
+                    fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+                }
+
+            }
+        }catch{
+            fatalError("Failed to fetch benefits: \(error)")
         }
     }
 }

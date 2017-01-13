@@ -77,7 +77,6 @@ class CauseTableViewCell: UITableViewCell {
         contentImage.addSubview(maskImage)
         
         self.imgArtist.frame = CGRect(x:210*valuePro, y: 60*valuePro, width: 118*valuePro, height: 118*valuePro)
-        
         self.lblTitle.text = "Ayuda a los ninos de las calles del peru\ncon el apoyo de Mario Hart"
         self.lblCount.text = "260 Personas\nabrazaron esta causa"
         self.imgBackgroundImage.image = #imageLiteral(resourceName: "cellBackgroundImage")
