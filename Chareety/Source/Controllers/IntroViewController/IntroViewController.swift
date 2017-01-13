@@ -147,6 +147,9 @@ class IntroViewController: UIViewController, RegisterViewControllerDelegate, Log
     
     func getCauses(page:String , count:String){
 
+        let notificationName = Notification.Name("endCauses")
+        NotificationCenter.default.addObserver(self, selector: #selector(self.endCauses), name: notificationName, object: nil)
+        
         var params:Dictionary <String,String> = Dictionary()
         params["p"] = page
         params["c"] = count
@@ -158,5 +161,20 @@ class IntroViewController: UIViewController, RegisterViewControllerDelegate, Log
         ApiConsume.sharedInstance.consumeDataWithNewSession(url: "listar", path: Constants.API_URL, headers: headers, params: params, typeParams: TypeParam.urlParams, httpMethod: HTTP_METHOD.GET, notificationName: "endCauses")
         
     }
-
+    func endCauses(notification:Notification){
+         DispatchQueue.main.async(execute: {
+//            if let dictionary = notification.object as? [String: Any] {
+//                for (key, value) in dictionary {
+//                    // access all key / value pairs in dictionary
+//                }
+//            }
+            let data:Dictionary = notification.object as! Dictionary<String, AnyObject>
+            let items = data["result"] as? [AnyObject]
+            for item in items! {
+                 let itemDic:Dictionary = item as! Dictionary<String, AnyObject>
+                Storage.shared.saveCauseForId(uid: itemDic["id"] as! String, nameEntity: "EntityCause", item: itemDic as! Dictionary<String, String>)
+                
+            }
+         })
+    }
 }
