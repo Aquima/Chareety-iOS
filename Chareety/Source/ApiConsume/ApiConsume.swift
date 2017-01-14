@@ -78,6 +78,8 @@ class ApiConsume: NSObject{
                         JSONSerialization.ReadingOptions.mutableContainers)
                     
                     print("response: \(jsonResult)") //this part works fine
+                    let notificationName = Notification.Name(notificationName)
+                    NotificationCenter.default.post(name: notificationName, object: jsonResult)
                     
                   //  print(jsonResult["team1"])
                     
@@ -91,5 +93,5 @@ class ApiConsume: NSObject{
             }.resume()
         
     }
-    
+  
 }

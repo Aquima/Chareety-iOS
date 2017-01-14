@@ -131,11 +131,11 @@ struct Storage {
         }
     }
     // MARK: - SAVE
-    func saveCauseForId(uid:String,nameEntity:String,item:Dictionary<String, String>) -> (EntityCause, Bool){
+    func saveCauseForId(nameEntity:String,item:Dictionary<String, Any>) -> (EntityCause, Bool){
    
         let moc =  Storage.shared.context
         let benefitFetch = NSFetchRequest<NSFetchRequestResult>(entityName: nameEntity)
-        benefitFetch.predicate = NSPredicate(format: "id == %@", uid)
+        benefitFetch.predicate = NSPredicate(format: "id == %@", item["id"] as! String)
         do {
             
             let list = try moc.fetch(benefitFetch) as! [EntityCause]
@@ -156,16 +156,16 @@ struct Storage {
                                                    insertInto: Storage.shared.context)
                 }
                 //save data
-                currentEntity.id = uid
-                currentEntity.title = item["title"]
-                currentEntity.urlImageCause = item["url_image_cause"]
-                currentEntity.type = Int16(item["type"]!)!
-                currentEntity.total = item["total"]
-                currentEntity.accumulated = Int32(item["Accumulated"]!)!
-                currentEntity.percent = Double(item["percent"]!)!
-                currentEntity.urlImageAmbassador = item["url_image_ambassador"]
-                currentEntity.people = Int32(item["people"]!)!
-                currentEntity.nameAbassador = item["name_ambassador"]
+                currentEntity.id = item["id"] as? String
+                currentEntity.title = item["title"] as? String
+                currentEntity.urlImageCause = item["url_image_cause"] as! String?
+                currentEntity.type = Int16(item["type"] as! NSNumber)
+                currentEntity.total = item["total"] as? String
+                currentEntity.accumulated = Int32(item["Accumulated"] as! NSNumber)
+                currentEntity.percent = Double(item["percent"] as! NSNumber)
+                currentEntity.urlImageAmbassador = item["url_image_ambassador"] as? String
+                currentEntity.people = Int32(item["people"] as! NSNumber)
+                currentEntity.nameAbassador = item["name_ambassador"] as? String
                 
                 let moc =  Storage.shared.context
                 
