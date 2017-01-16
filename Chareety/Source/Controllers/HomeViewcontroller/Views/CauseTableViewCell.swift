@@ -15,6 +15,7 @@ class CauseTableViewCell: UITableViewCell {
     var imgArtist : UIImageView = UIImageView()
     var lblTitle : UILabel = UILabel()
     var lblCount : UILabel = UILabel()
+    var lblPercentTitle : UILabel = UILabel()
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -46,7 +47,7 @@ class CauseTableViewCell: UITableViewCell {
         
         let btnInfo = UIButton()
         btnInfo.frame =  CGRect(x: 16*valuePro, y: 101*valuePro, width: 115*valuePro, height: 22*valuePro)
-        btnInfo.titleLabel?.font = UIFont (name: "Avenir-Light", size: 9*valuePro)
+        btnInfo.titleLabel?.font = UIFont (name: "Avenir", size: 9*valuePro)
         btnInfo.setTitle("mas información    ▷",for: UIControlState.normal)
         btnInfo.layer.borderColor = UIColor.black.cgColor
         btnInfo.layer.cornerRadius = btnInfo.frame.size.height/2
@@ -74,6 +75,7 @@ class CauseTableViewCell: UITableViewCell {
         strokeCustom.layer.cornerRadius = strokeCustom.frame.height/2
         strokeCustom.layer.masksToBounds = true
         strokeCustom.backgroundColor = UIColor.init(hexString: "8bcd1f")
+        strokeCustom.backgroundColor = UIColor.init(hexString: "F93D53")
         contentImage.addSubview(strokeCustom)
         
         let maskImage : UIView = UIView()
@@ -82,7 +84,18 @@ class CauseTableViewCell: UITableViewCell {
         maskImage.layer.masksToBounds = true
         maskImage.backgroundColor = UIColor.red
         contentImage.addSubview(maskImage)
-
+        
+        let shadowProgress:UIView = UIView()
+        shadowProgress.frame = CGRect(x:160*valuePro, y: 140*valuePro, width: 125*valuePro, height: 10*valuePro)
+        shadowProgress.backgroundColor = UIColor.init(hexString: "333333")
+        self.contentCell.addSubview(shadowProgress)
+        
+        lblPercentTitle = UILabel()
+        lblPercentTitle.frame = CGRect(x:0*valuePro, y: 0*valuePro, width: 125*valuePro, height: 10*valuePro)
+        lblPercentTitle.textColor = UIColor.white
+        lblPercentTitle.font = UIFont (name: "Avenir-Light", size: 6.5*valuePro)
+        shadowProgress.addSubview(lblPercentTitle)
+        
         self.imgArtist.frame = CGRect(x:0*valuePro, y: -10*valuePro, width: 88*valuePro, height: 88*valuePro)
         maskImage.addSubview(self.imgArtist)
         
@@ -97,5 +110,63 @@ class CauseTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    
+    func loadwithEntity(entity:EntityCause){
+        self.imgBackgroundImage.contentMode = .scaleAspectFill
+        self.imgBackgroundImage.layer.masksToBounds = true
+        self.imgBackgroundImage.sd_setImage(with: URL.init(string: entity.urlImageCause!))
+        self.imgArtist.sd_setImage(with: URL.init(string: entity.urlImageAmbassador!))
+        self.lblTitle.attributedText = atributedTitle(title: entity.title!, ambasador: entity.nameAbassador!)
+        self.lblCount.attributedText = atributedTitleCount(title: "\(entity.people) ", ambasador: "Personas\nabrazaron esta causa")
+        self.lblPercentTitle.text = "  \(entity.percent*100)% Completado"
+    }
+    func atributedTitle(title:String,ambasador:String) -> NSMutableAttributedString{
+        let valuePro:CGFloat  = CGFloat(NSNumber.getPropotionalValueDevice())
+        
+        let myMutableString = NSMutableAttributedString(
+            string: "\(title) \(ambasador)",
+            attributes: [NSFontAttributeName:UIFont(
+                name: "Avenir-Light",
+                size: 12.0*valuePro)!])
+        let atributes:NSMutableString = NSMutableString()
+        atributes.append("\(title) \(ambasador)")
+      //  atributes.append(ambasador)
+        
+        let range:NSRange = atributes.range(of:"\(title)")
+        myMutableString.addAttributes([NSFontAttributeName:UIFont(
+            name: "Avenir-Light",
+            size: 12.0*valuePro)!], range: range)
+        
+        let range2:NSRange = atributes.range(of:"\(ambasador)")
+        myMutableString.addAttributes([NSFontAttributeName:UIFont(
+            name: "Avenir-Black",
+            size: 12.0*valuePro)!], range: range2)
+        
+        return myMutableString
+
+    }
+    func atributedTitleCount(title:String,ambasador:String) -> NSMutableAttributedString{
+        let valuePro:CGFloat  = CGFloat(NSNumber.getPropotionalValueDevice())
+        
+        let myMutableString = NSMutableAttributedString(
+            string: "\(title) \(ambasador)",
+            attributes: [NSFontAttributeName:UIFont(
+                name: "Avenir-Light",
+                size: 9.5*valuePro)!])
+        let atributes:NSMutableString = NSMutableString()
+        atributes.append("\(title) \(ambasador)")
+        //  atributes.append(ambasador)
+        
+        let range:NSRange = atributes.range(of:"\(title)")
+        myMutableString.addAttributes([NSFontAttributeName:UIFont(
+            name: "Avenir-Black",
+            size: 9.5*valuePro)!], range: range)
+        
+        let range2:NSRange = atributes.range(of:"\(ambasador)")
+        myMutableString.addAttributes([NSFontAttributeName:UIFont(
+            name: "Avenir-Light",
+            size: 9.5*valuePro)!], range: range2)
+        
+        return myMutableString
+        
+    }
 }

@@ -102,27 +102,7 @@ class IntroViewController: UIViewController, RegisterViewControllerDelegate, Log
     
     func goHome(sender: UIButton!) {
         getCauses(page: "1", count: "20")
-//        let Item1 = HomeViewController()
-//        let icon1 = UITabBarItem(title: "", image: #imageLiteral(resourceName: "HomeOffItem"), selectedImage: #imageLiteral(resourceName: "HomeItem"))
-//        Item1.tabBarItem = icon1
-//        
-//        let Item2 = ProfileViewController()
-//        let icon2 = UITabBarItem(title: "", image: #imageLiteral(resourceName: "ProfileOffItem"), selectedImage: #imageLiteral(resourceName: "ProfileItem"))
-//        Item2.tabBarItem = icon2
-//        
-//        let Item3 = TermsAndContditionsViewController()
-//        let icon3 = UITabBarItem(title: "", image: #imageLiteral(resourceName: "TermsOffItem"), selectedImage: #imageLiteral(resourceName: "TermsItem"))
-//        Item3.tabBarItem = icon3
-//        
-//        let Item4 = SettingsViewController()
-//        let icon4 = UITabBarItem(title: "", image: #imageLiteral(resourceName: "SettingOffItem"), selectedImage: #imageLiteral(resourceName: "SettingItem"))
-//        Item4.tabBarItem = icon4
-//        
-//        let tabBarVC:UITabBarController = UITabBarController()
-//        tabBarVC.viewControllers = [Item1,Item2,Item3,Item4]
-//        tabBarVC.tabBar.backgroundColor = UIColor.clear
-//        tabBarVC.tabBar.tintColor = UIColor.init(hexString: "00AFF1")
-//        self.navigationController?.pushViewController(tabBarVC, animated: true)
+       
     }
     func goRegister(sender: UIButton!) {
         let registerVC:RegisterViewController = RegisterViewController()
@@ -134,7 +114,29 @@ class IntroViewController: UIViewController, RegisterViewControllerDelegate, Log
         logInVC.delegate = self
         self.present(logInVC, animated: true, completion: nil)
     }
-
+    func loadTabController(){
+        let Item1 = HomeViewController()
+        let icon1 = UITabBarItem(title: "", image: #imageLiteral(resourceName: "HomeOffItem"), selectedImage: #imageLiteral(resourceName: "HomeItem"))
+        Item1.tabBarItem = icon1
+        
+        let Item2 = ProfileViewController()
+        let icon2 = UITabBarItem(title: "", image: #imageLiteral(resourceName: "ProfileOffItem"), selectedImage: #imageLiteral(resourceName: "ProfileItem"))
+        Item2.tabBarItem = icon2
+        
+        let Item3 = TermsAndContditionsViewController()
+        let icon3 = UITabBarItem(title: "", image: #imageLiteral(resourceName: "TermsOffItem"), selectedImage: #imageLiteral(resourceName: "TermsItem"))
+        Item3.tabBarItem = icon3
+        
+        let Item4 = SettingsViewController()
+        let icon4 = UITabBarItem(title: "", image: #imageLiteral(resourceName: "SettingOffItem"), selectedImage: #imageLiteral(resourceName: "SettingItem"))
+        Item4.tabBarItem = icon4
+        
+        let tabBarVC:UITabBarController = UITabBarController()
+        tabBarVC.viewControllers = [Item1,Item2,Item3,Item4]
+        tabBarVC.tabBar.backgroundColor = UIColor.clear
+        tabBarVC.tabBar.tintColor = UIColor.init(hexString: "00AFF1")
+        self.navigationController?.pushViewController(tabBarVC, animated: true)
+    }
     // MARK: - LogInViewControllerDelegate
     func dissmisCompletedLoadRegisterVC(){
         goRegister(sender: nil)
@@ -172,7 +174,7 @@ class IntroViewController: UIViewController, RegisterViewControllerDelegate, Log
                         let itemDic:Dictionary = (item as? [String: Any])!
                         Storage.shared.saveCauseForId(nameEntity: "EntityCause", item: itemDic)
                     }
-                
+                self.loadTabController()
             }
 //            let data:Dictionary = notification.object as! Dictionary<String, AnyObject>
 //            let items = data["result"] as? [AnyObject]

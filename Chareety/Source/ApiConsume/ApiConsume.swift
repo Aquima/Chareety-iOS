@@ -88,6 +88,8 @@ class ApiConsume: NSObject{
                     print("JSON Processing Failed")
                 }
 
+            }else{
+                print(err as Any)
             }
             
             }.resume()
