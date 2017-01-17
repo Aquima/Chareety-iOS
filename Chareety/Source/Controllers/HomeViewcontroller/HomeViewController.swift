@@ -103,14 +103,14 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     public func numberOfSections(in tableView: UITableView) -> Int {
         return self.fetchedResultsController.sections?.count ?? 0
     }
-    
-    // MARK: - TableView Delegate
     public func tableView(_ tableView:              UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell:CauseTableViewCell = tableView.dequeueReusableCell(withIdentifier: "CauseTableViewCell") as! CauseTableViewCell
         let cause:EntityCause = self.fetchedResultsController.object(at: indexPath)
         cell.loadwithEntity(entity: cause)
         return cell
     }
+    // MARK: - TableView Delegate
+   
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let valuePro:CGFloat  = CGFloat(NSNumber.getPropotionalValueDevice())
         return 179*valuePro;
@@ -119,7 +119,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         // Do here
         self.navigationController?.pushViewController(DetailCauseViewController(), animated: true)
     }
-    // MARK: - TableView
+  
     override func viewWillAppear(_ animated: Bool) {
 
         

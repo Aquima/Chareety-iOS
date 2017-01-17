@@ -9,7 +9,9 @@
 import UIKit
 
 class DetailCauseViewController: UIViewController {
-
+    
+    var scrollView:UIScrollView = UIScrollView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -25,7 +27,9 @@ class DetailCauseViewController: UIViewController {
         view.addSubview(btnBack)
         
     }
-
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -34,6 +38,9 @@ class DetailCauseViewController: UIViewController {
     func drawBody(){
         self.view.backgroundColor = UIColor.white
         let valuePro:CGFloat  = CGFloat(NSNumber.getPropotionalValueDevice())
+        //created scrollView
+        self.scrollView.frame = self.view.frame
+        self.view.addSubview(self.scrollView)
         
         let imageView = UIImageView(image: #imageLiteral(resourceName: "CharetyAppLogo"))
         
