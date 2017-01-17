@@ -11,6 +11,7 @@ import UIKit
 class CauseTableViewCell: UITableViewCell {
     
     var contentCell : UIView = UIView()
+    let percentProgress : UIView = UIView()
     var imgBackgroundImage : UIImageView = UIImageView()
     var imgArtist : UIImageView = UIImageView()
     var lblTitle : UILabel = UILabel()
@@ -90,6 +91,10 @@ class CauseTableViewCell: UITableViewCell {
         shadowProgress.backgroundColor = UIColor.init(hexString: "333333")
         self.contentCell.addSubview(shadowProgress)
         
+        percentProgress.frame = CGRect(x:0*valuePro, y: 0*valuePro, width: 125*valuePro, height: 10*valuePro)
+        percentProgress.backgroundColor = UIColor.init(hexString: "F93D53")
+        shadowProgress.addSubview(percentProgress)
+        
         lblPercentTitle = UILabel()
         lblPercentTitle.frame = CGRect(x:0*valuePro, y: 0*valuePro, width: 125*valuePro, height: 10*valuePro)
         lblPercentTitle.textColor = UIColor.white
@@ -103,14 +108,16 @@ class CauseTableViewCell: UITableViewCell {
         self.lblTitle.text = "Ayuda a los ninos de las calles del peru\ncon el apoyo de Mario Hart"
         self.lblCount.text = "260 Personas\nabrazaron esta causa"
         self.imgBackgroundImage.image = #imageLiteral(resourceName: "cellBackgroundImage")
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
         // Configure the view for the selected state
     }
     func loadwithEntity(entity:EntityCause){
+        let valuePro:CGFloat  = CGFloat(NSNumber.getPropotionalValueDevice())
+        
         self.imgBackgroundImage.contentMode = .scaleAspectFill
         self.imgBackgroundImage.layer.masksToBounds = true
         self.imgBackgroundImage.sd_setImage(with: URL.init(string: entity.urlImageCause!))
@@ -118,6 +125,9 @@ class CauseTableViewCell: UITableViewCell {
         self.lblTitle.attributedText = atributedTitle(title: entity.title!, ambasador: entity.nameAbassador!)
         self.lblCount.attributedText = atributedTitleCount(title: "\(entity.people) ", ambasador: "Personas\nabrazaron esta causa")
         self.lblPercentTitle.text = "  \(entity.percent*100)% Completado"
+        let percent:CGFloat = CGFloat(entity.percent)
+        self.percentProgress.frame = CGRect(x:0*valuePro, y: 0*valuePro, width: 125*valuePro*percent, height: 10*valuePro)
+        
     }
     func atributedTitle(title:String,ambasador:String) -> NSMutableAttributedString{
         let valuePro:CGFloat  = CGFloat(NSNumber.getPropotionalValueDevice())
