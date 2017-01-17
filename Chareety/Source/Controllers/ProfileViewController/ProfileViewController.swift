@@ -54,6 +54,9 @@ class ProfileViewController: UIViewController {
         btnGrid.layer.cornerRadius = btnGrid.frame.size.height/2
         btnGrid.backgroundColor = UIColor.init(hexString: "00AFF1")
         btnGrid.setTitleColor(UIColor.white, for: .normal)
+        btnGrid.addTarget(self, action: #selector(self.goEmbrace), for: UIControlEvents.touchUpInside)
+        
+        
         
         let lblMessagge = UILabel()
         lblMessagge.frame =  CGRect(x: (view.frame.size.width-300*valuePro)/2, y: 339*valuePro, width: 300*valuePro, height: 74*valuePro)
@@ -75,9 +78,15 @@ class ProfileViewController: UIViewController {
     override var prefersStatusBarHidden: Bool {
         return true
     }
+    // MARK: - Actions
     func goBack(sender: UIButton!) {
         
-        self.dismiss(animated: true, completion: nil)
+        _ = self.navigationController?.popViewController(animated: true)
+        
+    }
+    func goEmbrace(sender: UIButton!) {
+        
+        self.navigationController?.pushViewController(EmbriceViewController(), animated: true)
         
     }
     

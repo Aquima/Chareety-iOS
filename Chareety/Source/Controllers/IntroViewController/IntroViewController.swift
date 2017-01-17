@@ -126,16 +126,25 @@ class IntroViewController: UIViewController, RegisterViewControllerDelegate, Log
         let icon2 = UITabBarItem(title: "", image: #imageLiteral(resourceName: "ProfileOffItem"), selectedImage: #imageLiteral(resourceName: "ProfileItem"))
         Item2.tabBarItem = icon2
         
+        let nav2 = UINavigationController.init(rootViewController: Item2)
+        nav2.navigationBar.isHidden = true
+        
         let Item3 = TermsAndContditionsViewController()
         let icon3 = UITabBarItem(title: "", image: #imageLiteral(resourceName: "TermsOffItem"), selectedImage: #imageLiteral(resourceName: "TermsItem"))
         Item3.tabBarItem = icon3
+        
+        let nav3 = UINavigationController.init(rootViewController: Item3)
+        nav3.navigationBar.isHidden = true
         
         let Item4 = SettingsViewController()
         let icon4 = UITabBarItem(title: "", image: #imageLiteral(resourceName: "SettingOffItem"), selectedImage: #imageLiteral(resourceName: "SettingItem"))
         Item4.tabBarItem = icon4
         
+        let nav4 = UINavigationController.init(rootViewController: Item4)
+        nav4.navigationBar.isHidden = true
+        
         let tabBarVC:UITabBarController = UITabBarController()
-        tabBarVC.viewControllers = [Item1,Item2,Item3,Item4]
+        tabBarVC.viewControllers = [nav1,nav2,nav3,nav4]
         tabBarVC.tabBar.backgroundColor = UIColor.clear
         tabBarVC.tabBar.tintColor = UIColor.init(hexString: "00AFF1")
         self.navigationController?.pushViewController(tabBarVC, animated: true)
