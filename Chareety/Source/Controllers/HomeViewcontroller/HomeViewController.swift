@@ -117,7 +117,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Do here
-        
+        self.navigationController?.pushViewController(DetailCauseViewController(), animated: true)
     }
     // MARK: - TableView
     override func viewWillAppear(_ animated: Bool) {
