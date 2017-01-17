@@ -121,6 +121,8 @@ class IntroViewController: UIViewController, RegisterViewControllerDelegate, Log
         let icon1 = UITabBarItem(title: "", image: #imageLiteral(resourceName: "HomeOffItem"), selectedImage: #imageLiteral(resourceName: "HomeItem"))
         Item1.tabBarItem = icon1
         
+        let nav1 = UINavigationController.init(rootViewController: Item1)
+        nav1.navigationBar.isHidden = true
         
         let Item2 = ProfileViewController()
         let icon2 = UITabBarItem(title: "", image: #imageLiteral(resourceName: "ProfileOffItem"), selectedImage: #imageLiteral(resourceName: "ProfileItem"))
