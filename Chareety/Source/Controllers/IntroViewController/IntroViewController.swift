@@ -115,6 +115,8 @@ class IntroViewController: UIViewController, RegisterViewControllerDelegate, Log
         self.present(logInVC, animated: true, completion: nil)
     }
     func loadTabController(){
+      
+        
         let Item1 = HomeViewController()
         let icon1 = UITabBarItem(title: "", image: #imageLiteral(resourceName: "HomeOffItem"), selectedImage: #imageLiteral(resourceName: "HomeItem"))
         Item1.tabBarItem = icon1
@@ -148,8 +150,10 @@ class IntroViewController: UIViewController, RegisterViewControllerDelegate, Log
         tabBarVC.tabBar.backgroundColor = UIColor.clear
         tabBarVC.tabBar.tintColor = UIColor.init(hexString: "00AFF1")
         self.navigationController?.pushViewController(tabBarVC, animated: true)
+        
     }
     // MARK: - LogInViewControllerDelegate
+
     func dissmisCompletedLoadRegisterVC(){
         goRegister(sender: nil)
     }
