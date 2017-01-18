@@ -45,9 +45,6 @@ class DetailCauseViewController: UIViewController {
     func drawBody(){
         self.view.backgroundColor = UIColor.white
         let valuePro:CGFloat  = CGFloat(NSNumber.getPropotionalValueDevice())
-        //created scrollView
-        self.scrollView.frame = self.view.frame
-        self.view.addSubview(self.scrollView)
         
         let imageView = UIImageView(image: #imageLiteral(resourceName: "CharetyAppLogo"))
         
