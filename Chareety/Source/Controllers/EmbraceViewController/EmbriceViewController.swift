@@ -70,6 +70,7 @@ class EmbriceViewController: UIViewController, UICollectionViewDataSource, UICol
         collectionView.dataSource = self
         collectionView.backgroundColor = UIColor.clear
         
+        
         self.view.addSubview(collectionView)
 
         
@@ -84,7 +85,7 @@ class EmbriceViewController: UIViewController, UICollectionViewDataSource, UICol
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "UserCollectionViewCell", for: indexPath as IndexPath)
         
-        cell.backgroundColor = UIColor.green
+        cell.backgroundColor = UIColor.clear
         return cell
     }
   
