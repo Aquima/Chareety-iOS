@@ -7,17 +7,25 @@
 //
 
 import UIKit
+import FirebaseAuth
+import Firebase
+import FBSDKLoginKit
+import TwitterCore
+import TwitterKit
+
 enum inputRegisterType{
     case keyRegisterMail
     case keyRegisterName
     case keyRegisterBirthday
     case keyRegisterPassword
 }
+
 protocol RegisterViewControllerDelegate {
     func dissmisCompletedLoadLogInVC()
 }
-class RegisterViewController: UIViewController, UITextFieldDelegate {
 
+class RegisterViewController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDelegate {
+    
     var delegate:RegisterViewControllerDelegate?
     var contentForm:UIScrollView!
     var inputRegisterList:NSMutableArray = []
@@ -25,6 +33,13 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         drawBody()
+        // Use Firebase library to configure APIs
+//        FIRApp.configure()
+//        
+//        let credential = FIRFacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
+//        FIRAuth.auth()?.signIn(with: credential) { (user, error) in
+//            // ...
+//        }
         // Do any additional setup after loading the view.
         let valuePro:CGFloat  = CGFloat(NSNumber.getPropotionalValueDevice())
         let btnBack = UIButton()
@@ -36,6 +51,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         btnBack.addTarget(self, action: #selector(self.goBack), for: UIControlEvents.touchUpInside)
         btnBack.setImage(#imageLiteral(resourceName: "btnDismiss"), for: UIControlState.normal)
         view.addSubview(btnBack)
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -85,15 +101,21 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         btnSigIn.addTarget(self, action: #selector(self.goLogIn), for: UIControlEvents.touchUpInside)
         
         let btnFacebook = UIButton()
+       // let btnFacebook = FBSDKLoginButton()
         btnFacebook.frame =  CGRect(x: (self.view.frame.size.width-290*valuePro)/2, y: 78*valuePro, width: 290*valuePro, height: 35*valuePro)
         btnFacebook.titleLabel?.font = UIFont (name: "Avenir-Light", size: 13*valuePro)
         btnFacebook.setTitle("Registrarse con facebook",for: UIControlState.normal)
         btnFacebook.layer.borderColor = UIColor.black.cgColor
         btnFacebook.layer.cornerRadius = btnFacebook.frame.size.height/2
+        btnFacebook.layer.masksToBounds = true
         btnFacebook.backgroundColor = UIColor.init(hexString: "4E71A8")
         btnFacebook.setTitleColor(UIColor.white, for: .normal)
+        btnFacebook.addTarget(self, action: #selector(self.signInWithFacebook(sender:)), for: UIControlEvents.touchUpInside)
+       // btnFacebook.delegate = self
+        
         
         let btnTwitter = UIButton()
+        btnTwitter.setImage(nil, for: .normal)
         btnTwitter.frame =  CGRect(x: (self.view.frame.size.width-290*valuePro)/2, y: 125*valuePro, width: 290*valuePro, height: 35*valuePro)
         btnTwitter.titleLabel?.font = UIFont (name: "Avenir-Light", size: 13*valuePro)
         btnTwitter.setTitle("Registrarse con twitter",for: UIControlState.normal)
@@ -101,6 +123,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         btnTwitter.layer.cornerRadius = btnTwitter.frame.size.height/2
         btnTwitter.backgroundColor = UIColor.init(hexString: "1CB7EB")
         btnTwitter.setTitleColor(UIColor.white, for: .normal)
+        btnTwitter.addTarget(self, action: #selector(self.signInWithTwitter), for: UIControlEvents.touchUpInside)
         
         let btnGoogle = UIButton()
         btnGoogle.frame =  CGRect(x: (self.view.frame.size.width-290*valuePro)/2, y: 174*valuePro, width: 290*valuePro, height: 35*valuePro)
@@ -290,5 +313,45 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         }
         self.contentForm.contentOffset.y = 0
     }
+// MARK : FACEBOOK
+    func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
+        if let error = error {
+            print(error.localizedDescription)
+            return
+        }
+        // ...
+    }
+    func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!){
+        
+    }
+    // MARK : Actions
+    func signInWithFacebook(sender: UIButton) {
+        let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
+        fbLoginManager.logIn(withReadPermissions: ["email"], from: self, handler: { (result, error) -> Void in
+            
+//            if error != nil {
+//                NSLog("Process error")
+//            }
+//            else if result?.isCancelled {
+//                NSLog("Cancelled")
+//            }
+//            else {
+//                NSLog("Logged in")
+//                self.getFBUserData()
+//            }
+            
+        })
+    }
+    func signInWithTwitter(sender: UIButton) {
+        Twitter.sharedInstance().logIn(completion: { session, error in
+            if (session != nil) {
+            //  let authToken = session.authToken
+            //   let authTokenSecret = session.authTokenSecret
+            // ...
+            } else {
+            // ...
+            }
+        })
 
+    }
 }

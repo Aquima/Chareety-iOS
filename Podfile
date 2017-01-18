@@ -8,5 +8,11 @@ target 'Chareety' do
   # Pods for Chareety
   pod 'Firebase/Auth'
   pod 'SDWebImage', '~>3.8'
-  
+  use_frameworks!
+  pod 'FacebookCore'
+  pod 'FBSDKLoginKit'
+  pod 'NVActivityIndicatorView'
+  pod 'Fabric'
+  pod 'TwitterKit'
+  pod 'GoogleSignIn'
 end
