@@ -16,16 +16,7 @@
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                <subviews>
-                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="userList" translatesAutoresizingMaskIntoConstraints="NO" id="cji-Z5-jbv">
-                        <rect key="frame" x="8" y="8" width="42" height="42"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </imageView>
-                </subviews>
             </view>
         </collectionViewCell>
     </objects>
-    <resources>
-        <image name="userList" width="263" height="264"/>
-    </resources>
 </document>
