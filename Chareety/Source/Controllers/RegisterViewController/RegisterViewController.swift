@@ -354,4 +354,46 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, FBSDKLoginB
         })
 
     }
+    // MARK: - API Consume
+    
+    func registerRedSocial(type:String , uid:String, token:String){
+        
+        let notificationName = Notification.Name("endRegisterUser")
+        NotificationCenter.default.addObserver(self, selector: #selector(self.endRegister), name: notificationName, object: nil)
+        
+        var params:Dictionary <String,String> = Dictionary()
+        params["typeSocialNetworking"] = type
+        params["uidNetworkingSocial"] = uid
+        params["tokenSocialNetworking"] = token
+        
+        var headers:Dictionary <String,String> = Dictionary()
+        headers["Content-Type"] = "application/json"
+        headers["Api-key"] = Constants.API_KEY
+        
+        ApiConsume.sharedInstance.consumeDataWithNewSession(url: "RegisterUser", path: Constants.API_URL, headers: headers, params: params, typeParams: TypeParam.urlParams, httpMethod: HTTP_METHOD.GET, notificationName: "endRegisterUser")
+        
+    }
+    func endRegister(notification:Notification){
+        NotificationCenter.default.removeObserver(self, name: notification.name, object: nil)
+        DispatchQueue.main.async(execute: {
+            if let dictionary = notification.object as? [String: Any] {
+                let nestedArray = dictionary["result"] as? [Any]
+                // access nested dictionary values by key
+                for item in nestedArray! {
+                    print(item)
+                    let itemDic:Dictionary = (item as? [String: Any])!
+                    Storage.shared.saveCauseForId(nameEntity: "EntityCause", item: itemDic)
+                }
+              //  self.loadTabController()
+            }
+            //            let data:Dictionary = notification.object as! Dictionary<String, AnyObject>
+            //            let items = data["result"] as? [AnyObject]
+            //            for item in items! {
+            //                let itemDic:Dictionary = item as! Dictionary<String, AnyObject>
+            //                Storage.shared.saveCauseForId(uid: itemDic["id"] as! String, nameEntity: "EntityCause", item: itemDic as! Dictionary<String, String>)
+            //                
+            //            }
+        })
+    }
+
 }
