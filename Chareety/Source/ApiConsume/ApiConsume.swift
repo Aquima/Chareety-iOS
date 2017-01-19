@@ -55,10 +55,12 @@ class ApiConsume: NSObject{
      */
     public func consumeDataWithNewSession(url:String, path:String, headers:Dictionary< String, String>,params:Dictionary< String, String>,typeParams:TypeParam,httpMethod:String,notificationName:String){
         var urlWithPathString:String!
-
+        var isJson:Bool = true
         switch typeParams {
 
+
         case .urlParams:
+            isJson = false
             urlWithPathString =  "\(path)\(url)?\(params.stringFromHttpParameters())"
         default:
             urlWithPathString =  "\(path)\(url)"
@@ -67,7 +69,18 @@ class ApiConsume: NSObject{
         var request = URLRequest(url: URL(string: urlWithPathString)!)
         request.httpMethod = httpMethod
         request.addHeaders(headers: headers)
-        
+        if isJson == true {
+            do {
+                let jsonData = try JSONSerialization.data(withJSONObject: params, options: .prettyPrinted)
+
+                request.httpBody = jsonData
+
+            } catch {
+                print(error.localizedDescription)
+            }
+
+        }
+
         let session:URLSession = URLSession.shared
        // session.configuration = self.configuration!
         session.dataTask(with: request) {data, response, err in
@@ -80,9 +93,7 @@ class ApiConsume: NSObject{
                     print("response: \(jsonResult)") //this part works fine
                     let notificationName = Notification.Name(notificationName)
                     NotificationCenter.default.post(name: notificationName, object: jsonResult)
-                    
-                  //  print(jsonResult["team1"])
-                    
+
                 } catch {
                     
                     print("JSON Processing Failed")

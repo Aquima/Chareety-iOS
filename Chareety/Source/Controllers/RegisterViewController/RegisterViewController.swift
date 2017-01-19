@@ -328,26 +328,26 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, FBSDKLoginB
     func signInWithFacebook(sender: UIButton) {
         let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
         fbLoginManager.logIn(withReadPermissions: ["email"], from: self, handler: { (result, error) -> Void in
-            
-//            if error != nil {
-//                NSLog("Process error")
-//            }
-//            else if result?.isCancelled {
-//                NSLog("Cancelled")
-//            }
-//            else {
-//                NSLog("Logged in")
-//                self.getFBUserData()
-//            }
-            
+
+            if error != nil {
+                NSLog("Process error")
+            }
+            else if (result?.isCancelled)! {
+                NSLog("Cancelled")
+            }
+            else {
+                NSLog("Logged in")
+                 self.registerRedSocial(type: "1", uid: "ios.developer.qm", token: (result?.token.tokenString)!)
+            }
+
         })
     }
     func signInWithTwitter(sender: UIButton) {
         Twitter.sharedInstance().logIn(completion: { session, error in
             if (session != nil) {
-            //  let authToken = session.authToken
-            //   let authTokenSecret = session.authTokenSecret
-            // ...
+              let authToken = session?.authToken
+               let authUID = session?.userID
+                self.registerRedSocial(type: "0", uid: authUID!, token: (authToken)!)
             } else {
             // ...
             }
@@ -365,34 +365,17 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, FBSDKLoginB
         params["typeSocialNetworking"] = type
         params["uidNetworkingSocial"] = uid
         params["tokenSocialNetworking"] = token
-        
+
         var headers:Dictionary <String,String> = Dictionary()
         headers["Content-Type"] = "application/json"
         headers["Api-key"] = Constants.API_KEY
         
-        ApiConsume.sharedInstance.consumeDataWithNewSession(url: "RegisterUser", path: Constants.API_URL, headers: headers, params: params, typeParams: TypeParam.urlParams, httpMethod: HTTP_METHOD.GET, notificationName: "endRegisterUser")
+        ApiConsume.sharedInstance.consumeDataWithNewSession(url: "RegisterUser", path: Constants.API_URL, headers: headers, params: params, typeParams: TypeParam.jsonBody, httpMethod: HTTP_METHOD.POST, notificationName: "endRegisterUser")
         
     }
     func endRegister(notification:Notification){
         NotificationCenter.default.removeObserver(self, name: notification.name, object: nil)
         DispatchQueue.main.async(execute: {
-            if let dictionary = notification.object as? [String: Any] {
-                let nestedArray = dictionary["result"] as? [Any]
-                // access nested dictionary values by key
-                for item in nestedArray! {
-                    print(item)
-                    let itemDic:Dictionary = (item as? [String: Any])!
-                    Storage.shared.saveCauseForId(nameEntity: "EntityCause", item: itemDic)
-                }
-              //  self.loadTabController()
-            }
-            //            let data:Dictionary = notification.object as! Dictionary<String, AnyObject>
-            //            let items = data["result"] as? [AnyObject]
-            //            for item in items! {
-            //                let itemDic:Dictionary = item as! Dictionary<String, AnyObject>
-            //                Storage.shared.saveCauseForId(uid: itemDic["id"] as! String, nameEntity: "EntityCause", item: itemDic as! Dictionary<String, String>)
-            //                
-            //            }
         })
     }
 
