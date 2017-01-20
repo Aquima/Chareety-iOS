@@ -71,7 +71,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         }
     }
     public func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        if url.scheme == "facebook_url_schema" {
+        if url.scheme == "fb2187820874777384" {
             return FBSDKApplicationDelegate.sharedInstance().application(
                 app,
                 open: url as URL!,
