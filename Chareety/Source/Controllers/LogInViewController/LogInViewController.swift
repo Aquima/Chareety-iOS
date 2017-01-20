@@ -12,6 +12,7 @@ import Firebase
 import FBSDKLoginKit
 import TwitterCore
 import TwitterKit
+import GoogleSignIn
 
 enum inputType{
     case keyMail
@@ -22,7 +23,7 @@ protocol LogInViewControllerDelegate {
     func dissmisCompletedLoadRegisterVC()
     func dissmisAndGoHomeVC()
 }
-class LogInViewController: UIViewController, UITextFieldDelegate {
+class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDelegate  {
     
     var delegate:LogInViewControllerDelegate?
     var contentForm:UIScrollView!
@@ -30,6 +31,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        GIDSignIn.sharedInstance().uiDelegate = self
         drawBody()
         // Do any additional setup after loading the view.
         let valuePro:CGFloat  = CGFloat(NSNumber.getPropotionalValueDevice())
@@ -123,7 +125,8 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         btnGoogle.layer.cornerRadius = btnGoogle.frame.size.height/2
         btnGoogle.backgroundColor = UIColor.init(hexString: "E3411F")
         btnGoogle.setTitleColor(UIColor.white, for: .normal)
-        
+        btnGoogle.addTarget(self, action: #selector(self.signWithGoogle(sender:)), for: UIControlEvents.touchUpInside)
+
         let lblTitleForm = UILabel()
         lblTitleForm.frame =  CGRect(x: 0, y: 224*valuePro, width: 320*valuePro, height: 17*valuePro)
         lblTitleForm.font = UIFont (name: "Avenir-Light", size: 14.51*valuePro)
@@ -320,6 +323,9 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         })
     }
     // MARK : Actions
+    func signWithGoogle(sender:UIButton) {
+       GIDSignIn.sharedInstance().signIn()
+    }
     func signInWithFacebook(sender: UIButton) {
         let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
         fbLoginManager.logIn(withReadPermissions: ["email"], from: self, handler: { (result, error) -> Void in
@@ -340,13 +346,19 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     func signInWithTwitter(sender: UIButton) {
         Twitter.sharedInstance().logIn(completion: { session, error in
             if (session != nil) {
-                let authToken = session?.authToken
+                let authToken = (session?.authToken)! + "," + (session?.authTokenSecret)! + "," + (session?.userName)!
                 let authUID = session?.userID
-                self.logInRedSocial(type: "0", uid: authUID!, token: (authToken)!)
+                self.logInRedSocial(type: "0", uid: authUID!, token: (authToken))
             } else {
                 // ...
             }
         })
         
+    }
+    // MARK: Google
+    func sign(inWillDispatch signIn: GIDSignIn!, error: Error!){
+        let authToken = signIn.currentUser.authentication.accessToken
+        let authUID = signIn.currentUser.userID
+        self.logInRedSocial(type: "2", uid: authUID!, token: (authToken)!)
     }
 }

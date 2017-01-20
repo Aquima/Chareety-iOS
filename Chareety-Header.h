@@ -10,5 +10,5 @@
 #define Chareety_Header_h
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
-
+#import <GoogleSignIn/GoogleSignIn.h>
 #endif /* Chareety_Header_h */

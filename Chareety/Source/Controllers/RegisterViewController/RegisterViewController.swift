@@ -12,6 +12,7 @@ import Firebase
 import FBSDKLoginKit
 import TwitterCore
 import TwitterKit
+import GoogleSignIn
 
 enum inputRegisterType{
     case keyRegisterMail
@@ -25,7 +26,7 @@ protocol RegisterViewControllerDelegate {
     func dissmisAndGoHomeVC()
 }
 
-class RegisterViewController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDelegate {
+class RegisterViewController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDelegate, GIDSignInUIDelegate {
     
     var delegate:RegisterViewControllerDelegate?
     var contentForm:UIScrollView!
@@ -33,6 +34,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, FBSDKLoginB
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        GIDSignIn.sharedInstance().uiDelegate = self
         drawBody()
         // Use Firebase library to configure APIs
 //        FIRApp.configure()
@@ -326,7 +328,17 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, FBSDKLoginB
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!){
         
     }
+
+    // MARK: Google
+    func sign(inWillDispatch signIn: GIDSignIn!, error: Error!){
+        let authToken = signIn.currentUser.authentication.accessToken
+        let authUID = signIn.currentUser.userID
+        self.registerRedSocial(type: "2", uid: authUID!, token: (authToken)!)
+    }
     // MARK : Actions
+    func signWithGoogle(sender:UIButton) {
+        GIDSignIn.sharedInstance().signIn()
+    }
     func signInWithFacebook(sender: UIButton) {
         let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
         fbLoginManager.logIn(withReadPermissions: ["email"], from: self, handler: { (result, error) -> Void in
@@ -349,6 +361,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, FBSDKLoginB
             if (session != nil) {
               let authToken = session?.authToken
                let authUID = session?.userID
+
                 self.registerRedSocial(type: "0", uid: authUID!, token: (authToken)!)
             } else {
             // ...
@@ -371,6 +384,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, FBSDKLoginB
             sender.isHidden = false
         }
     }
+
     // MARK: - API Consume
     func registerManual(name:String , email:String, password:String, date:String){
 

@@ -11,9 +11,10 @@ import CoreData
 import Firebase
 import Fabric
 import TwitterKit
+import GoogleSignIn
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
 
     var window: UIWindow?
 
@@ -24,14 +25,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         Fabric.with([Twitter.self])
-        FIRApp.configure()
+     //   FIRApp.configure()
         
         window? = UIWindow()
         splashVC = SplashviewControllerViewController()
         navigatorViewController = UINavigationController.init(rootViewController: splashVC)
         navigatorViewController.navigationBar.isHidden = true
         window?.rootViewController = navigatorViewController
-        
+
+        // Initialize sign-in
+        FIRApp.configure()
+
+        GIDSignIn.sharedInstance().clientID = FIRApp.defaultApp()?.options.clientID
+        GIDSignIn.sharedInstance().delegate = self
+
+
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
 
@@ -63,13 +71,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     public func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        
-        return FBSDKApplicationDelegate.sharedInstance().application(
-            app,
-            open: url as URL!,
-            sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String,
-            annotation: options[UIApplicationOpenURLOptionsKey.annotation]
-        )
+        if url.scheme == "facebook_url_schema" {
+            return FBSDKApplicationDelegate.sharedInstance().application(
+                app,
+                open: url as URL!,
+                sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String,
+                annotation: options[UIApplicationOpenURLOptionsKey.annotation]
+            )
+
+        }else{
+            return GIDSignIn.sharedInstance().handle(url,
+                                                     sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String,
+                                                     annotation: options[UIApplicationOpenURLOptionsKey.annotation])
+            
+
+        }
     }
     
     public func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
@@ -79,6 +95,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             sourceApplication: sourceApplication,
             annotation: annotation)
     }
+    // MARK : GOOGLE
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!){
+        if let error = error {
+            print(error.localizedDescription)
+            return
+        }
+    }
+//    func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!,
+//                withError error: NSError!) {
+//        if let error = error {
+//            print(error.localizedDescription)
+//            return
+//        }
+//        // ...
+//    }
+//
+
 
 }
 
