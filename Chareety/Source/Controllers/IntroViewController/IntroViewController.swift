@@ -117,7 +117,7 @@ class IntroViewController: UIViewController, RegisterViewControllerDelegate, Log
         activityIndicatorView.color = sender.backgroundColor!
         sender.isHidden = true
         getCauses(page: "1", count: "20")
-       
+
     }
     func goRegister(sender: UIButton!) {
         
@@ -178,6 +178,9 @@ class IntroViewController: UIViewController, RegisterViewControllerDelegate, Log
     // MARK: - RegisterViewControllerDelegate
     func dissmisCompletedLoadLogInVC(){
         goLogIn(sender: nil)
+    }
+    func dissmisAndGoHomeVC() {
+        goHome(sender: self.btnExplorer)
     }
     func goIntro(notification:Notification){
         NotificationCenter.default.removeObserver(self, name: notification.name, object: nil)

@@ -22,6 +22,7 @@ enum inputRegisterType{
 
 protocol RegisterViewControllerDelegate {
     func dissmisCompletedLoadLogInVC()
+    func dissmisAndGoHomeVC()
 }
 
 class RegisterViewController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDelegate {
@@ -196,7 +197,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, FBSDKLoginB
         inputBirthday.font = UIFont (name: "Avenir-Light", size: 13*valuePro)
         inputBirthday.textColor = UIColor.init(hexString: "303030")
         inputBirthday.backgroundColor = UIColor.init(hexString: "F2F2F2")
-        inputBirthday.placeholder = "Fecha de Nacimiento"
+        inputBirthday.placeholder = "Dia/Mes/Año"
         inputBirthday.layer.borderColor = UIColor.init(hexString: "cccccc").cgColor
         inputBirthday.layer.borderWidth = 1
         inputBirthday.textAlignment = NSTextAlignment.center
@@ -232,6 +233,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, FBSDKLoginB
         btnCreateAccount.layer.cornerRadius = btnCreateAccount.frame.size.height/2
         btnCreateAccount.backgroundColor = UIColor.init(hexString: "8BCD1F")
         btnCreateAccount.setTitleColor(UIColor.white, for: .normal)
+        btnCreateAccount.addTarget(self, action: #selector(self.registerManualValidate), for: UIControlEvents.touchUpInside)
         contentForm.addSubview(btnCreateAccount)
         
         view.addSubview(contentForm)
@@ -354,13 +356,45 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, FBSDKLoginB
         })
 
     }
+    func registerManualValidate(sender:UIButton)  {
+        let inputTextMail:UITextField = self.inputRegisterList[inputRegisterType.keyRegisterMail.hashValue] as! UITextField
+        let inputTextName:UITextField = self.inputRegisterList[inputRegisterType.keyRegisterName.hashValue] as! UITextField
+        let inputTextBirthday:UITextField = self.inputRegisterList[inputRegisterType.keyRegisterBirthday.hashValue] as! UITextField
+        let inputTextPassword:UITextField = self.inputRegisterList[inputRegisterType.keyRegisterPassword.hashValue] as! UITextField
+
+        if inputTextMail.text != "" && inputTextName.text != "" && inputTextBirthday.text != "" && inputTextPassword.text != "" {
+            self.registerManual(name: inputTextName.text!, email: inputTextMail.text!, password: inputTextPassword.text!, date: inputTextBirthday.text!)
+
+            sender.isHidden = true
+        }else{
+
+            sender.isHidden = false
+        }
+    }
     // MARK: - API Consume
-    
+    func registerManual(name:String , email:String, password:String, date:String){
+
+        let notificationName = Notification.Name("endRegisterUser")
+        NotificationCenter.default.addObserver(self, selector: #selector(self.endRegister), name: notificationName, object: nil)
+
+        var params:Dictionary <String,String> = Dictionary()
+        params["nombre"] = name
+        params["email"] = email
+        params["contrasenia"] = password
+        params["fechaNacimiento"] = date
+
+        var headers:Dictionary <String,String> = Dictionary()
+        headers["Content-Type"] = "application/json"
+        headers["Api-key"] = Constants.API_KEY
+
+        ApiConsume.sharedInstance.consumeDataWithNewSession(url: "RegisterUser", path: Constants.API_URL, headers: headers, params: params, typeParams: TypeParam.jsonBody, httpMethod: HTTP_METHOD.POST, notificationName: "endRegisterUser")
+
+    }
     func registerRedSocial(type:String , uid:String, token:String){
         
         let notificationName = Notification.Name("endRegisterUser")
         NotificationCenter.default.addObserver(self, selector: #selector(self.endRegister), name: notificationName, object: nil)
-        
+
         var params:Dictionary <String,String> = Dictionary()
         params["typeSocialNetworking"] = type
         params["uidNetworkingSocial"] = uid
@@ -374,9 +408,14 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, FBSDKLoginB
         
     }
     func endRegister(notification:Notification){
+
         NotificationCenter.default.removeObserver(self, name: notification.name, object: nil)
         DispatchQueue.main.async(execute: {
+            self.dismiss(animated: false, completion: {
+                self.delegate?.dissmisAndGoHomeVC()
+            })
         })
+
     }
 
 }

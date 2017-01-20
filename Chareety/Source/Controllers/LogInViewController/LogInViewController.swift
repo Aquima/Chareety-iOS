@@ -8,6 +8,10 @@
 
 import UIKit
 import FirebaseAuth
+import Firebase
+import FBSDKLoginKit
+import TwitterCore
+import TwitterKit
 
 enum inputType{
     case keyMail
@@ -16,6 +20,7 @@ enum inputType{
 }
 protocol LogInViewControllerDelegate {
     func dissmisCompletedLoadRegisterVC()
+    func dissmisAndGoHomeVC()
 }
 class LogInViewController: UIViewController, UITextFieldDelegate {
     
@@ -98,7 +103,8 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         btnFacebook.layer.cornerRadius = btnFacebook.frame.size.height/2
         btnFacebook.backgroundColor = UIColor.init(hexString: "4E71A8")
         btnFacebook.setTitleColor(UIColor.white, for: .normal)
-        
+        btnFacebook.addTarget(self, action: #selector(self.signInWithFacebook(sender:)), for: UIControlEvents.touchUpInside)
+
         let btnTwitter = UIButton()
         btnTwitter.frame =  CGRect(x: (self.view.frame.size.width-290*valuePro)/2, y: 125*valuePro, width: 290*valuePro, height: 35*valuePro)
         btnTwitter.titleLabel?.font = UIFont (name: "Avenir-Light", size: 13*valuePro)
@@ -107,6 +113,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         btnTwitter.layer.cornerRadius = btnTwitter.frame.size.height/2
         btnTwitter.backgroundColor = UIColor.init(hexString: "1CB7EB")
         btnTwitter.setTitleColor(UIColor.white, for: .normal)
+        btnTwitter.addTarget(self, action: #selector(self.signInWithTwitter), for: UIControlEvents.touchUpInside)
         
         let btnGoogle = UIButton()
         btnGoogle.frame =  CGRect(x: (self.view.frame.size.width-290*valuePro)/2, y: 174*valuePro, width: 290*valuePro, height: 35*valuePro)
@@ -186,6 +193,8 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         btnEnter.layer.cornerRadius = btnEnter.frame.size.height/2
         btnEnter.backgroundColor = UIColor.init(hexString: "00AFF1")
         btnEnter.setTitleColor(UIColor.white, for: .normal)
+        btnEnter.addTarget(self, action: #selector(self.loginManualValidate), for: UIControlEvents.touchUpInside)
+
         contentForm.addSubview(btnEnter)
         
         view.addSubview(contentForm)
@@ -250,17 +259,28 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         }
         self.contentForm.contentOffset.y = 0
     }
+    func loginManualValidate(sender:UIButton)  {
+        let inputTextMail:UITextField = self.inputList[inputType.keyMail.hashValue] as! UITextField
+        let inputTextPassword:UITextField = self.inputList[inputType.keyPassword.hashValue] as! UITextField
+
+        if inputTextMail.text != "" && inputTextPassword.text != "" {
+
+            self.logInManual(email: inputTextMail.text!, password: inputTextPassword.text! )
+            sender.isHidden = true
+        }else{
+
+            sender.isHidden = false
+        }
+    }
     // MARK: - API Consume
-    func logInManual(type:String , uid:String, token:String){
+    func logInManual(email:String , password:String){
         
         let notificationName = Notification.Name("endLogIn")
         NotificationCenter.default.addObserver(self, selector: #selector(self.endLogIn), name: notificationName, object: nil)
-         let inputEmailText:UITextField = self.inputList[inputType.keyMail.hashValue] as! UITextField
-         let inputPasswordText:UITextField = self.inputList[inputType.keyPassword.hashValue] as! UITextField
-        
+
         var params:Dictionary <String,String> = Dictionary()
-        params["email"] = inputEmailText.text
-        params["contrasenia"] = inputPasswordText.text
+        params["email"] = email
+        params["contrasenia"] = password
         
         var headers:Dictionary <String,String> = Dictionary()
         headers["Content-Type"] = "application/json"
@@ -287,10 +307,46 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         ApiConsume.sharedInstance.consumeDataWithNewSession(url: "LogIn", path: Constants.API_URL, headers: headers, params: params, typeParams: TypeParam.jsonBody, httpMethod: HTTP_METHOD.POST, notificationName: "endLogIn")
         
     }
+
     func endLogIn(notification:Notification){
         NotificationCenter.default.removeObserver(self, name: notification.name, object: nil)
         DispatchQueue.main.async(execute: {
+
+            // validate token != nil
+            self.dismiss(animated: false, completion: {
+                self.contentForm = nil
+                self.delegate?.dissmisAndGoHomeVC()
+            })
         })
     }
+    // MARK : Actions
+    func signInWithFacebook(sender: UIButton) {
+        let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
+        fbLoginManager.logIn(withReadPermissions: ["email"], from: self, handler: { (result, error) -> Void in
 
+            if error != nil {
+                NSLog("Process error")
+            }
+            else if (result?.isCancelled)! {
+                NSLog("Cancelled")
+            }
+            else {
+                NSLog("Logged in")
+                self.logInRedSocial(type: "1", uid: "ios.developer.qm", token: (result?.token.tokenString)!)
+            }
+
+        })
+    }
+    func signInWithTwitter(sender: UIButton) {
+        Twitter.sharedInstance().logIn(completion: { session, error in
+            if (session != nil) {
+                let authToken = session?.authToken
+                let authUID = session?.userID
+                self.logInRedSocial(type: "0", uid: authUID!, token: (authToken)!)
+            } else {
+                // ...
+            }
+        })
+        
+    }
 }
