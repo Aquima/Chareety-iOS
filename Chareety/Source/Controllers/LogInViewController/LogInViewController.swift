@@ -250,4 +250,47 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         }
         self.contentForm.contentOffset.y = 0
     }
+    // MARK: - API Consume
+    func logInManual(type:String , uid:String, token:String){
+        
+        let notificationName = Notification.Name("endLogIn")
+        NotificationCenter.default.addObserver(self, selector: #selector(self.endLogIn), name: notificationName, object: nil)
+         let inputEmailText:UITextField = self.inputList[inputType.keyMail.hashValue] as! UITextField
+         let inputPasswordText:UITextField = self.inputList[inputType.keyPassword.hashValue] as! UITextField
+        
+        var params:Dictionary <String,String> = Dictionary()
+        params["email"] = inputEmailText.text
+        params["contrasenia"] = inputPasswordText.text
+        
+        var headers:Dictionary <String,String> = Dictionary()
+        headers["Content-Type"] = "application/json"
+        headers["Api-key"] = Constants.API_KEY
+        
+        ApiConsume.sharedInstance.consumeDataWithNewSession(url: "LogIn", path: Constants.API_URL, headers: headers, params: params, typeParams: TypeParam.jsonBody, httpMethod: HTTP_METHOD.POST, notificationName: "endLogIn")
+        
+    }
+    
+    func logInRedSocial(type:String , uid:String, token:String){
+        
+        let notificationName = Notification.Name("endLogIn")
+        NotificationCenter.default.addObserver(self, selector: #selector(self.endLogIn), name: notificationName, object: nil)
+        
+        var params:Dictionary <String,String> = Dictionary()
+        params["typeSocialNetworking"] = type
+        params["uidNetworkingSocial"] = uid
+        params["tokenSocialNetworking"] = token
+        
+        var headers:Dictionary <String,String> = Dictionary()
+        headers["Content-Type"] = "application/json"
+        headers["Api-key"] = Constants.API_KEY
+        
+        ApiConsume.sharedInstance.consumeDataWithNewSession(url: "LogIn", path: Constants.API_URL, headers: headers, params: params, typeParams: TypeParam.jsonBody, httpMethod: HTTP_METHOD.POST, notificationName: "endLogIn")
+        
+    }
+    func endLogIn(notification:Notification){
+        NotificationCenter.default.removeObserver(self, name: notification.name, object: nil)
+        DispatchQueue.main.async(execute: {
+        })
+    }
+
 }

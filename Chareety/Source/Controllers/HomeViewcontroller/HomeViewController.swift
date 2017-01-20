@@ -92,8 +92,9 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     func goBack(sender: UIButton!) {
         
-        _ = self.navigationController?.popViewController(animated: true)
-        
+     //   _ = self.navigationController?.popViewController(animated: true)
+        let notificationName = Notification.Name("goIntro")
+        NotificationCenter.default.post(name: notificationName, object: nil)
     }
     // MARK: - TableView Datasource
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{

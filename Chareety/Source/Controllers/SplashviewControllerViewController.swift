@@ -7,23 +7,30 @@
 //
 
 import UIKit
+import NVActivityIndicatorView
 
 class SplashviewControllerViewController: UIViewController {
-
+    
+    var activityIndicatorView:NVActivityIndicatorView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         drawBody()
         // Do any additional setup after loading the view.
-        let when = DispatchTime.now() + 2 // change 2 to desired number of seconds
-        DispatchQueue.main.asyncAfter(deadline: when) {
-            // Your code with delay
-            self.navigationController?.pushViewController(IntroViewController(), animated: true)
-        }
+       
     }
     func drawBody(){
         
-        view.backgroundColor = UIColor.white
         let valuePro:CGFloat  = CGFloat(NSNumber.getPropotionalValueDevice())
+        
+        let frame =  CGRect(x: (self.view.frame.size.width-25*valuePro)/2, y:100*valuePro + (self.view.frame.size.height)/2, width: 25*valuePro, height: 25*valuePro)
+        activityIndicatorView = NVActivityIndicatorView(frame: frame,
+                                                        type: NVActivityIndicatorType(rawValue: 1)!)
+        activityIndicatorView.color = UIColor.init(hexString: "303030")
+        activityIndicatorView.startAnimating()
+      
+        
+        view.backgroundColor = UIColor.white
   
         let imageView = UIImageView(image: #imageLiteral(resourceName: "CharetyAppLogo"))
         
@@ -38,7 +45,17 @@ class SplashviewControllerViewController: UIViewController {
         
         view.addSubview(lblTitleAddress)
         view.addSubview(imageView)
+        view.addSubview(activityIndicatorView)
         
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        activityIndicatorView.startAnimating()
+        
+        let when = DispatchTime.now() + 2 // change 2 to desired number of seconds
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            // Your code with delay
+            self.navigationController?.pushViewController(IntroViewController(), animated: true)
+        }
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

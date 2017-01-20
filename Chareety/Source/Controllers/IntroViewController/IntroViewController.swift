@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import NVActivityIndicatorView
 
 class IntroViewController: UIViewController, RegisterViewControllerDelegate, LogInViewControllerDelegate {
-
+    var activityIndicatorView:NVActivityIndicatorView!
+    var btnExplorer:UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
         drawBody()
@@ -48,7 +50,7 @@ class IntroViewController: UIViewController, RegisterViewControllerDelegate, Log
         btnRegister.setTitleColor(UIColor.white, for: .normal)
         btnRegister.addTarget(self, action: #selector(self.goRegister), for: UIControlEvents.touchUpInside)
         
-        let btnExplorer = UIButton()
+        btnExplorer = UIButton()
         btnExplorer.frame =  CGRect(x: (self.view.frame.size.width-290*valuePro)/2, y: 478*valuePro, width: 290*valuePro, height: 35*valuePro)
         btnExplorer.titleLabel?.font = UIFont (name: "Avenir-Light", size: 13*valuePro)
         btnExplorer.setTitle("Explorar el App",for: UIControlState.normal)
@@ -57,6 +59,13 @@ class IntroViewController: UIViewController, RegisterViewControllerDelegate, Log
         btnExplorer.backgroundColor = UIColor.init(hexString: "CCCCCC")
         btnExplorer.setTitleColor(UIColor.white, for: .normal)
         btnExplorer.addTarget(self, action: #selector(self.goHome), for: UIControlEvents.touchUpInside)
+        
+        let frame =  CGRect(x: btnExplorer.frame.origin.x + (btnExplorer.frame.size.width-35*valuePro)/2, y:  btnExplorer.frame.origin.y + (btnExplorer.frame.size.height-35*valuePro)/2, width:35*valuePro, height: 35*valuePro)
+        activityIndicatorView = NVActivityIndicatorView(frame: frame,
+                                                        type: NVActivityIndicatorType(rawValue:1)!)
+        activityIndicatorView.color = UIColor.init(hexString: "00AFF1")
+        activityIndicatorView.startAnimating()
+        self.view.addSubview(activityIndicatorView)
         
         let btnSigIn = UIButton()
         btnSigIn.frame =  CGRect(x: (self.view.frame.size.width-290*valuePro)/2, y: 523*valuePro, width: 290*valuePro, height: 35*valuePro)
@@ -101,10 +110,17 @@ class IntroViewController: UIViewController, RegisterViewControllerDelegate, Log
     }
     
     func goHome(sender: UIButton!) {
+        
+        let valuePro:CGFloat  = CGFloat(NSNumber.getPropotionalValueDevice())
+        let frame =  CGRect(x: sender.frame.origin.x + (sender.frame.size.width-35*valuePro)/2, y:  sender.frame.origin.y + (sender.frame.size.height-35*valuePro)/2, width:25*valuePro, height: 25*valuePro)
+        activityIndicatorView.frame = frame
+        activityIndicatorView.color = sender.backgroundColor!
+        sender.isHidden = true
         getCauses(page: "1", count: "20")
        
     }
     func goRegister(sender: UIButton!) {
+        
         let registerVC:RegisterViewController = RegisterViewController()
         registerVC.delegate = self
         self.present(registerVC, animated: true, completion: nil)
@@ -116,6 +132,8 @@ class IntroViewController: UIViewController, RegisterViewControllerDelegate, Log
     }
     func loadTabController(){
       
+        let notificationName = Notification.Name("goIntro")
+        NotificationCenter.default.addObserver(self, selector: #selector(self.goIntro), name: notificationName, object: nil)
         
         let Item1 = HomeViewController()
         let icon1 = UITabBarItem(title: "", image: #imageLiteral(resourceName: "HomeOffItem"), selectedImage: #imageLiteral(resourceName: "HomeItem"))
@@ -161,6 +179,10 @@ class IntroViewController: UIViewController, RegisterViewControllerDelegate, Log
     func dissmisCompletedLoadLogInVC(){
         goLogIn(sender: nil)
     }
+    func goIntro(notification:Notification){
+        NotificationCenter.default.removeObserver(self, name: notification.name, object: nil)
+        _ = self.navigationController?.popToRootViewController(animated: true)
+    }
     // MARK: - API Consume
     
     func getCauses(page:String , count:String){
@@ -190,6 +212,7 @@ class IntroViewController: UIViewController, RegisterViewControllerDelegate, Log
                         let itemDic:Dictionary = (item as? [String: Any])!
                         Storage.shared.saveCauseForId(nameEntity: "EntityCause", item: itemDic)
                     }
+                self.btnExplorer.isHidden = false
                 self.loadTabController()
             }
 //            let data:Dictionary = notification.object as! Dictionary<String, AnyObject>
