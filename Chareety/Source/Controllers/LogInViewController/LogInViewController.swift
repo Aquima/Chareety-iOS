@@ -357,7 +357,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDel
     }
     // MARK: Google
     func sign(inWillDispatch signIn: GIDSignIn!, error: Error!){
-        let authToken = signIn.currentUser.authentication.accessToken
+        let authToken = signIn.currentUser.authentication.accessToken// + "," + signIn.currentUser.profile.imageURL(withDimension: 120).absoluteString
         let authUID = signIn.currentUser.userID
         self.logInRedSocial(type: "2", uid: authUID!, token: (authToken)!)
     }

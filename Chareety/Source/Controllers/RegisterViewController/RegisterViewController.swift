@@ -102,7 +102,8 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, FBSDKLoginB
 
         btnSigIn.setAttributedTitle(myMutableString, for: UIControlState.normal)
         btnSigIn.addTarget(self, action: #selector(self.goLogIn), for: UIControlEvents.touchUpInside)
-        
+
+
         let btnFacebook = UIButton()
        // let btnFacebook = FBSDKLoginButton()
         btnFacebook.frame =  CGRect(x: (self.view.frame.size.width-290*valuePro)/2, y: 78*valuePro, width: 290*valuePro, height: 35*valuePro)
@@ -136,7 +137,8 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, FBSDKLoginB
         btnGoogle.layer.cornerRadius = btnGoogle.frame.size.height/2
         btnGoogle.backgroundColor = UIColor.init(hexString: "E3411F")
         btnGoogle.setTitleColor(UIColor.white, for: .normal)
-        
+        btnGoogle.addTarget(self, action: #selector(self.signWithGoogle(sender:)), for: UIControlEvents.touchUpInside)
+
         let lblTitleForm = UILabel()
         lblTitleForm.frame =  CGRect(x: 0, y: 224*valuePro, width: 320*valuePro, height: 17*valuePro)
         lblTitleForm.font = UIFont (name: "Avenir-Light", size: 14.51*valuePro)
@@ -331,7 +333,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, FBSDKLoginB
 
     // MARK: Google
     func sign(inWillDispatch signIn: GIDSignIn!, error: Error!){
-        let authToken = signIn.currentUser.authentication.accessToken
+        let authToken = signIn.currentUser.authentication.accessToken //+ "," + signIn.currentUser.profile.imageURL(withDimension: 120).absoluteString
         let authUID = signIn.currentUser.userID
         self.registerRedSocial(type: "2", uid: authUID!, token: (authToken)!)
     }
