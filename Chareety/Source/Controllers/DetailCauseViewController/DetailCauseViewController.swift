@@ -9,28 +9,14 @@
 import UIKit
 
 class DetailCauseViewController: UIViewController {
-
+    
+    var uid:String!
     var contentForm:UIScrollView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let valuePro:CGFloat  = CGFloat(NSNumber.getPropotionalValueDevice())
-        // Do any additional setup after loading the view.
-        contentForm = UIScrollView()
-        contentForm.frame =  CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height-(self.tabBarController?.tabBar.frame.size.height)!)
-        
-        contentForm.contentSize = CGSize(width: self.view.frame.size.width, height: 781*valuePro-(self.tabBarController?.tabBar.frame.size.height)!)
-        self.view.addSubview(contentForm)
-        drawBody()
-        
-        
-        let btnBack = UIButton()
-        btnBack.frame =  CGRect(x:10*valuePro, y: 10*valuePro, width: 40*valuePro, height: 40*valuePro)
-        btnBack.backgroundColor = UIColor.clear
-        btnBack.addTarget(self, action: #selector(self.goBack), for: UIControlEvents.touchUpInside)
-        btnBack.setImage(#imageLiteral(resourceName: "btnBack"), for: UIControlState.normal)
-        contentForm.addSubview(btnBack)
-        
+        self.view.backgroundColor = UIColor.white
+        getDetail(uid: self.uid)
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -41,9 +27,28 @@ class DetailCauseViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    func loadWitData(data:Dictionary<String, Any>){
+        let valuePro:CGFloat  = CGFloat(NSNumber.getPropotionalValueDevice())
+        // Do any additional setup after loading the view.
+        contentForm = UIScrollView()
+        contentForm.frame =  CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height-(self.tabBarController?.tabBar.frame.size.height)!)
+        
+        contentForm.contentSize = CGSize(width: self.view.frame.size.width, height: 781*valuePro-(self.tabBarController?.tabBar.frame.size.height)!)
+        self.view.addSubview(contentForm)
+        
+        drawBody(data: data)
+        
+        
+        let btnBack = UIButton()
+        btnBack.frame =  CGRect(x:10*valuePro, y: 10*valuePro, width: 40*valuePro, height: 40*valuePro)
+        btnBack.backgroundColor = UIColor.clear
+        btnBack.addTarget(self, action: #selector(self.goBack), for: UIControlEvents.touchUpInside)
+        btnBack.setImage(#imageLiteral(resourceName: "btnBack"), for: UIControlState.normal)
+        contentForm.addSubview(btnBack)
+    }
     // MARK: - Components
-    func drawBody(){
-        self.view.backgroundColor = UIColor.white
+    func drawBody(data:Dictionary<String, Any>){
+        
         let valuePro:CGFloat  = CGFloat(NSNumber.getPropotionalValueDevice())
         
         let imageView = UIImageView(image: #imageLiteral(resourceName: "CharetyAppLogo"))
@@ -55,7 +60,7 @@ class DetailCauseViewController: UIViewController {
         lblTitle.frame =  CGRect(x: (self.view.frame.size.width-280*valuePro)/2, y: 226*valuePro, width: 280*valuePro, height: 38*valuePro)
         lblTitle.font = UIFont (name: "Avenir", size: 12.8*valuePro)
         lblTitle.textColor = UIColor.init(hexString: "1A1A1A")
-        lblTitle.text = "Ayuda a los niños de las calles del PERU\ncon el apoyo de Mario Hart"
+        lblTitle.text = data["title"] as! String?//"Ayuda a los niños de las calles del PERU\ncon el apoyo de Mario Hart"
         lblTitle.textAlignment = NSTextAlignment.left
         lblTitle.numberOfLines = 2
         lblTitle.lineBreakMode = NSLineBreakMode.byWordWrapping
@@ -80,6 +85,9 @@ class DetailCauseViewController: UIViewController {
         image.layer.cornerRadius = image.frame.size.height/2
         image.layer.masksToBounds = true
         view1.addSubview(image)
+        
+        image.sd_setImage(with: URL.init(string: data["url_image_ambassador"] as! String))
+        
         
         let view2 = UIView()
         view2.frame = CGRect(x:234.667*valuePro,y: 33.684*valuePro,width: 11.089*valuePro,height: 17.742*valuePro)
@@ -187,6 +195,34 @@ class DetailCauseViewController: UIViewController {
         _ = self.navigationController?.popViewController(animated: true)
         
     }
+    // MARK: - API Consume
     
+    func getDetail(uid:String){
+        
+        let notificationName = Notification.Name("endCausesDetail")
+        NotificationCenter.default.addObserver(self, selector: #selector(self.endCausesDetail), name: notificationName, object: nil)
+        
+        var params:Dictionary <String,String> = Dictionary()
+        params["id"] = uid
+
+        
+        var headers:Dictionary <String,String> = Dictionary()
+        headers["Content-Type"] = "application/json"
+        headers["Api-key"] = Constants.API_KEY
+        
+        ApiConsume.sharedInstance.consumeDataWithNewSession(url: "listar", path: Constants.API_URL, headers: headers, params: params, typeParams: TypeParam.urlParams, httpMethod: HTTP_METHOD.GET, notificationName: "endCausesDetail")
+        
+    }
+    func endCausesDetail(notification:Notification){
+        NotificationCenter.default.removeObserver(self, name: notification.name, object: nil)
+        DispatchQueue.main.async(execute: {
+            if let dictionary = notification.object as? [String: Any] {
+                let total = dictionary["total"]
+                print("valor a pintar: \(total)")
+                // access nested dictionary values by key
+                self.loadWitData(data: dictionary)
+            }
+        })
+    }
     
 }

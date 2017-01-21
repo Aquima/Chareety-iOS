@@ -118,7 +118,10 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Do here
-        self.navigationController?.pushViewController(DetailCauseViewController(), animated: true)
+        let cause:EntityCause = self.fetchedResultsController.object(at: indexPath)
+        let causeDetailVC:DetailCauseViewController = DetailCauseViewController()
+        causeDetailVC.uid = cause.id
+        self.navigationController?.pushViewController(causeDetailVC, animated: true)
     }
   
     override func viewWillAppear(_ animated: Bool) {

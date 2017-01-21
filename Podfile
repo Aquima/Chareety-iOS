@@ -15,5 +15,5 @@ target 'Chareety' do
   pod 'Fabric'
   pod 'TwitterKit'
   pod 'GoogleSignIn'
-  pod 'Google/SignIn'
+
 end
