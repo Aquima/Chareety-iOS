@@ -124,8 +124,9 @@ class CauseTableViewCell: UITableViewCell {
         self.imgArtist.sd_setImage(with: URL.init(string: entity.urlImageAmbassador!))
         self.lblTitle.attributedText = atributedTitle(title: entity.title!, ambasador: entity.nameAbassador!)
         self.lblCount.attributedText = atributedTitleCount(title: "\(entity.people) ", ambasador: "Personas\nabrazaron esta causa")
-        self.lblPercentTitle.text = "  \(entity.percent*100)% Completado"
+    
         let percent:CGFloat = CGFloat(entity.percent)
+        self.lblPercentTitle.text = "  \(percent*100)% Completado"
         self.percentProgress.frame = CGRect(x:0*valuePro, y: 0*valuePro, width: 125*valuePro*percent, height: 10*valuePro)
         
     }

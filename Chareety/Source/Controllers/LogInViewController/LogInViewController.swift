@@ -314,12 +314,30 @@ class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDel
     func endLogIn(notification:Notification){
         NotificationCenter.default.removeObserver(self, name: notification.name, object: nil)
         DispatchQueue.main.async(execute: {
-
-            // validate token != nil
-            self.dismiss(animated: false, completion: {
-                self.contentForm = nil
-                self.delegate?.dissmisAndGoHomeVC()
-            })
+             if let dictionary = notification.object as? [String: Any] {
+                // validate token != nil
+                if dictionary["tokenChareety"] != nil {
+                    let valueToSave = dictionary["tokenChareety"]
+                    UserDefaults.standard.set(valueToSave, forKey: "tokenChareety")
+                    UserDefaults.standard.synchronize()
+                    
+                    self.dismiss(animated: false, completion: {
+                    self.contentForm = nil
+                    self.delegate?.dissmisAndGoHomeVC()
+                        
+                    })
+                }else{
+                    let alert = UIAlertController(title: "Chareety.org", message: "Contraseña incorrecta o usuario no registrado", preferredStyle: UIAlertControllerStyle.alert)
+                    
+                    // add an action (button)
+                    alert.addAction(UIAlertAction(title: "Aceptar", style: UIAlertActionStyle.default, handler: nil))
+                    
+                    // show the alert
+                    self.present(alert, animated: true, completion: nil)
+                }
+                    
+            }
+         
         })
     }
     // MARK : Actions

@@ -8,8 +8,19 @@
 
 import UIKit
 
-class DetailCauseViewController: UIViewController {
+class DetailCauseViewController: UIViewController,PayPalPaymentDelegate {
     
+    var environment:String = PayPalEnvironmentNoNetwork {
+        willSet(newEnvironment) {
+            if (newEnvironment != environment) {
+                PayPalMobile.preconnect(withEnvironment: newEnvironment)
+            }
+        }
+    }
+    
+    var resultText = "" // empty
+    var payPalConfig = PayPalConfiguration() // default
+
     var uid:String!
     var contentForm:UIScrollView!
     
@@ -17,10 +28,41 @@ class DetailCauseViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
         getDetail(uid: self.uid)
+        
+        // Set up payPalConfig
+        payPalConfig.acceptCreditCards = true
+        payPalConfig.merchantName = "Chareety.org"
+        payPalConfig.merchantPrivacyPolicyURL = URL(string: "https://www.paypal.com/webapps/mpp/ua/privacy-full")
+        payPalConfig.merchantUserAgreementURL = URL(string: "https://www.paypal.com/webapps/mpp/ua/useragreement-full")
+        
+        // Setting the languageOrLocale property is optional.
+        //
+        // If you do not set languageOrLocale, then the PayPalPaymentViewController will present
+        // its user interface according to the device's current language setting.
+        //
+        // Setting languageOrLocale to a particular language (e.g., @"es" for Spanish) or
+        // locale (e.g., @"es_MX" for Mexican Spanish) forces the PayPalPaymentViewController
+        // to use that language/locale.
+        //
+        // For full details, including a list of available languages and locales, see PayPalPaymentViewController.h.
+        
+        payPalConfig.languageOrLocale = Locale.preferredLanguages[0]
+        
+        // Setting the payPalShippingAddressOption property is optional.
+        //
+        // See PayPalConfiguration.h for details.
+        
+        payPalConfig.payPalShippingAddressOption = .payPal;
+        
+        print("PayPal iOS SDK Version: \(PayPalMobile.libraryVersion())")
     }
     
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        PayPalMobile.preconnect(withEnvironment: environment)
     }
 
     override func didReceiveMemoryWarning() {
@@ -33,7 +75,7 @@ class DetailCauseViewController: UIViewController {
         contentForm = UIScrollView()
         contentForm.frame =  CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height-(self.tabBarController?.tabBar.frame.size.height)!)
         
-        contentForm.contentSize = CGSize(width: self.view.frame.size.width, height: 781*valuePro-(self.tabBarController?.tabBar.frame.size.height)!)
+        contentForm.contentSize = CGSize(width: self.view.frame.size.width, height: 781*valuePro)
         self.view.addSubview(contentForm)
         
         drawBody(data: data)
@@ -53,7 +95,7 @@ class DetailCauseViewController: UIViewController {
         
         let imageView = UIImageView(image: #imageLiteral(resourceName: "CharetyAppLogo"))
         
-        imageView.frame = CGRect(x: ((self.view.frame.size.width-157.541)*valuePro)/2, y: 29*valuePro, width: 157.541*valuePro, height: 157.754*valuePro)
+        imageView.frame = CGRect(x: (self.view.frame.size.width-157.541*valuePro)/2, y: 29*valuePro, width: 157.541*valuePro, height: 157.754*valuePro)
         self.contentForm.addSubview(imageView)
         
         let lblTitle = UILabel()
@@ -135,7 +177,7 @@ class DetailCauseViewController: UIViewController {
         shadowProgress.backgroundColor = UIColor.init(hexString: "e6e6e6")
         self.contentForm.addSubview(shadowProgress)
         
-        let percent:CGFloat = CGFloat(0.75)
+        let percent:CGFloat = CGFloat(Double(data["percent"] as! NSNumber))
         let percentProgress: UIView = UIView()
         percentProgress.frame = CGRect(x:0*valuePro, y: 0*valuePro, width: 126.293*valuePro*percent, height: 10.24*valuePro)
         percentProgress.backgroundColor = UIColor.init(hexString: "f93d53")
@@ -145,12 +187,13 @@ class DetailCauseViewController: UIViewController {
         lblLabel3.frame = CGRect(x: 170.24*valuePro, y: 393.09*valuePro , width: 100*valuePro, height: 10.75*valuePro)
         lblLabel3.font = UIFont(name: "Avenir-Light", size: 11.09*valuePro)
         lblLabel3.textColor = UIColor.init(hexString: "f93d53")
-        lblLabel3.text = "75% Completado"
+
+        lblLabel3.text = "\(percent*100)% Completado"
         self.contentForm.addSubview(lblLabel3)
         
         
         let lblTitle2 = UILabel()
-        lblTitle2.frame = CGRect(x: (view.frame.size.width-161.5*valuePro)/2, y: 435.52, width: 161.5, height: 15.15)
+        lblTitle2.frame = CGRect(x: (view.frame.size.width-161.5*valuePro)/2, y: 435.52*valuePro, width: 161.5*valuePro, height: 15.15*valuePro)
         lblTitle2.font = UIFont(name: "Avenir-Light", size: 12.8*valuePro)
         lblTitle2.textColor = UIColor.init(hexString: "333333")
         lblTitle2.text = "Acerca de este Proyecto"
@@ -164,6 +207,7 @@ class DetailCauseViewController: UIViewController {
         txtvTermsContent.textAlignment = NSTextAlignment.center
         txtvTermsContent.text = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi."
         
+        txtvTermsContent.text = data["detail"] as! String
         self.contentForm.addSubview(txtvTermsContent)
         
         let btnDonate = UIButton()
@@ -174,10 +218,9 @@ class DetailCauseViewController: UIViewController {
         btnDonate.layer.cornerRadius = btnDonate.frame.size.height/2
         btnDonate.backgroundColor = UIColor.init(hexString: "f93d53")
         btnDonate.setTitleColor(UIColor.white, for: .normal)
+        btnDonate.addTarget(self, action: #selector(self.donateAction(_:)), for: UIControlEvents.touchUpInside)
         contentForm.addSubview(btnDonate)
-        
-        view.addSubview(contentForm)
-        
+     
     }
 
    // MARK: - Actions
@@ -224,5 +267,111 @@ class DetailCauseViewController: UIViewController {
             }
         })
     }
+    func donateWithPaypalConfirmation(uidConfirmation:String){
+        
+        let notificationName = Notification.Name("endDonar")
+        NotificationCenter.default.addObserver(self, selector: #selector(self.endPaymentCompleted), name: notificationName, object: nil)
+        
+        var params:Dictionary <String,String> = Dictionary()
+        params["causa"] = self.uid
+         params["monto"] = "10"
+         params["moneda"] = "1"
+        
+        
+        var headers:Dictionary <String,String> = Dictionary()
+        headers["Content-Type"] = "application/json"
+        headers["Api-key"] = Constants.API_KEY
+        if UserDefaults.standard.string(forKey: "tokenChareety") != nil {
+            headers["Chareety"] = UserDefaults.standard.string(forKey: "tokenChareety")
+        }
+        
+        
+        ApiConsume.sharedInstance.consumeDataWithNewSession(url: "Donar", path: Constants.API_URL, headers: headers, params: params, typeParams: TypeParam.jsonBody, httpMethod: HTTP_METHOD.POST, notificationName: "endDonar")
+        
+    }
+    func endPaymentCompleted(notification:Notification){
+        NotificationCenter.default.removeObserver(self, name: notification.name, object: nil)
+        DispatchQueue.main.async(execute: {
+            if let dictionary = notification.object as? [String: Any] {
+                let total = dictionary["total"]
+                print("valor a pintar: \(total)")
+                // access nested dictionary values by key
+               // self.loadWitData(data: dictionary)
+            }
+        })
+    }
+
+    // MARK: Single Payment
+    func donateAction(_ sender: UIButton) {
+        // Remove our last completed payment, just for demo purposes.
+        resultText = ""
+        
+        // Note: For purposes of illustration, this example shows a payment that includes
+        //       both payment details (subtotal, shipping, tax) and multiple items.
+        //       You would only specify these if appropriate to your situation.
+        //       Otherwise, you can leave payment.items and/or payment.paymentDetails nil,
+        //       and simply set payment.amount to your total charge.
+        
+        // Optional: include multiple items
+        let item1 = PayPalItem(name: "Donacion para Chareety 10", withQuantity: 1, withPrice: NSDecimalNumber(string: "10"), withCurrency: "USD", withSku: "CHA-0010")
+    //    let item2 = PayPalItem(name: "Free rainbow patch", withQuantity: 1, withPrice: NSDecimalNumber(string: "0.00"), withCurrency: "USD", withSku: "Hip-00066")
+        //    let item3 = PayPalItem(name: "Long-sleeve plaid shirt (mustache not included)", withQuantity: 1, withPrice: NSDecimalNumber(string: "37.99"), withCurrency: "USD", withSku: "Hip-00291")
+        //
+        let items = [item1]
+        let subtotal = PayPalItem.totalPrice(forItems: items)
+        
+        // Optional: include payment details
+        let shipping = NSDecimalNumber(string: "0")
+        let tax = NSDecimalNumber(string: "0")
+        let paymentDetails = PayPalPaymentDetails(subtotal: subtotal, withShipping: shipping, withTax: tax)
+        
+        let total = subtotal.adding(shipping).adding(tax)
+        
+        let payment = PayPalPayment(amount: total, currencyCode: "USD", shortDescription: "Donate for Chareety.org", intent: .sale)
+        
+        payment.items = items
+        payment.paymentDetails = paymentDetails
+        
+        if (payment.processable) {
+            let paymentViewController = PayPalPaymentViewController(payment: payment, configuration: payPalConfig, delegate: self)
+            present(paymentViewController!, animated: true, completion: nil)
+        }
+        else {
+            // This particular payment will always be processable. If, for
+            // example, the amount was negative or the shortDescription was
+            // empty, this payment wouldn't be processable, and you'd want
+            // to handle that here.
+            print("Payment not processalbe: \(payment)")
+        }
+        
+    }
     
+    // PayPalPaymentDelegate
+    
+    func payPalPaymentDidCancel(_ paymentViewController: PayPalPaymentViewController) {
+        print("PayPal Payment Cancelled")
+        resultText = ""
+     //   successView.isHidden = true
+        paymentViewController.dismiss(animated: true, completion: nil)
+    }
+    
+    func payPalPaymentViewController(_ paymentViewController: PayPalPaymentViewController, didComplete completedPayment: PayPalPayment) {
+        print("PayPal Payment Success !")
+        paymentViewController.dismiss(animated: true, completion: { () -> Void in
+            // send completed confirmaion to your server
+            print("Here is your proof of payment:\n\n\(completedPayment.confirmation)\n\nSend this to your server for confirmation and fulfillment.")
+            
+             if let dictionary = completedPayment.confirmation["response"] as? [String: Any] {
+                self.donateWithPaypalConfirmation(uidConfirmation:dictionary["id"] as! String )
+             }else{
+                
+            }
+            
+           
+                    //  self.resultText = completedPayment.description
+         //   self.showSuccess()
+        })
+    }
+    
+
 }
