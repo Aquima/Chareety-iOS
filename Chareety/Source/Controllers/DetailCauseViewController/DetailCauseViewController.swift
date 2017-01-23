@@ -293,8 +293,8 @@ class DetailCauseViewController: UIViewController,PayPalPaymentDelegate {
         NotificationCenter.default.removeObserver(self, name: notification.name, object: nil)
         DispatchQueue.main.async(execute: {
             if let dictionary = notification.object as? [String: Any] {
-                let total = dictionary["total"]
-                print("valor a pintar: \(total)")
+                let success = dictionary["success"]
+                print("exito: \(success)")
                 // access nested dictionary values by key
                // self.loadWitData(data: dictionary)
             }

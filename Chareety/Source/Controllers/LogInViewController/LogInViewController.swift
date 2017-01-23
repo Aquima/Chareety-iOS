@@ -7,8 +7,7 @@
 //
 
 import UIKit
-import FirebaseAuth
-import Firebase
+
 import FBSDKLoginKit
 import TwitterCore
 import TwitterKit

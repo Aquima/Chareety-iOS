@@ -2,26 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
-	<string>ca-app-pub-3940256099942544/2934735716</string>
-	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
-	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>217892820971-oam4isnka7ev5532nqovc0qn6s3bcdac.apps.googleusercontent.com</string>
+	<string>936638009515-ojjkqr6ojine1s6cq04sire95glrt1bg.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.217892820971-oam4isnka7ev5532nqovc0qn6s3bcdac</string>
-	<key>API_KEY</key>
-	<string>AIzaSyA_IBOvYTIp8E2UZu4zem3b_wqtt2sLPIs</string>
-	<key>GCM_SENDER_ID</key>
-	<string>217892820971</string>
+	<string>com.googleusercontent.apps.936638009515-ojjkqr6ojine1s6cq04sire95glrt1bg</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>org.chareety.Chareety</string>
+	<string>org.chareety.mobile</string>
 	<key>PROJECT_ID</key>
-	<string>chareetyapp</string>
-	<key>STORAGE_BUCKET</key>
-	<string>chareetyapp.appspot.com</string>
+	<string>chareety-org</string>
 	<key>IS_ADS_ENABLED</key>
 	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -33,8 +23,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:217892820971:ios:c5e68b4b97cdbd86</string>
-	<key>DATABASE_URL</key>
-	<string>https://chareetyapp.firebaseio.com</string>
+	<string>1:936638009515:ios:2316423b7857882b</string>
 </dict>
 </plist>
