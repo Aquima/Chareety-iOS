@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import FirebaseAuth
-import Firebase
 import FBSDKLoginKit
 import TwitterCore
 import TwitterKit
@@ -35,6 +33,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, FBSDKLoginB
     override func viewDidLoad() {
         super.viewDidLoad()
         GIDSignIn.sharedInstance().uiDelegate = self
+      //  GIDSignIn.sharedInstance().signOut()
         drawBody()
         // Use Firebase library to configure APIs
 //        FIRApp.configure()
@@ -333,12 +332,13 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, FBSDKLoginB
 
     // MARK: Google
     func sign(inWillDispatch signIn: GIDSignIn!, error: Error!){
-        let authToken = signIn.currentUser.authentication.accessToken //+ "," + signIn.currentUser.profile.imageURL(withDimension: 120).absoluteString
-        let authUID = signIn.currentUser.userID
-        self.registerRedSocial(type: "2", uid: authUID!, token: (authToken)!)
+//        let authToken = signIn.currentUser.authentication.accessToken //+ "," + signIn.currentUser.profile.imageURL(withDimension: 120).absoluteString
+//        let authUID = signIn.currentUser.userID
+//        self.registerRedSocial(type: "2", uid: authUID!, token: (authToken)!)
     }
     // MARK : Actions
     func signWithGoogle(sender:UIButton) {
+
         GIDSignIn.sharedInstance().signIn()
     }
     func signInWithFacebook(sender: UIButton) {

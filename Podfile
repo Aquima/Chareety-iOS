@@ -6,7 +6,7 @@ target 'Chareety' do
   use_frameworks!
 
   # Pods for Chareety
-  pod 'Firebase/Auth'
+  #  pod 'Firebase/Auth'
   pod 'SDWebImage', '~>3.8'
   use_frameworks!
   pod 'FacebookCore'

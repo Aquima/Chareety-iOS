@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreData
-import Firebase
 import Fabric
 import TwitterKit
 import GoogleSignIn
@@ -25,8 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         Fabric.with([Twitter.self])
-     //   FIRApp.configure()
-        
+
         window? = UIWindow()
         splashVC = SplashviewControllerViewController()
         navigatorViewController = UINavigationController.init(rootViewController: splashVC)
@@ -34,13 +32,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         window?.rootViewController = navigatorViewController
 
         // Initialize sign-in
-        FIRApp.configure()
-
-        GIDSignIn.sharedInstance().clientID = FIRApp.defaultApp()?.options.clientID
+        GIDSignIn.sharedInstance().clientID = "936638009515-ojjkqr6ojine1s6cq04sire95glrt1bg.apps.googleusercontent.com"
         GIDSignIn.sharedInstance().delegate = self
 
-        PayPalMobile .initializeWithClientIds(forEnvironments: [PayPalEnvironmentProduction: "YOUR_CLIENT_ID_FOR_PRODUCTION",
-                                                                PayPalEnvironmentSandbox: "access_token$sandbox$5r3jw872br7xdxsw$ecb39aaa43c45d43ee730468f5e15230"])
+        PayPalMobile.initializeWithClientIds(forEnvironments:[PayPalEnvironmentProduction: "YOUR_CLIENT_ID_FOR_PRODUCTION",
+                                                                PayPalEnvironmentSandbox: "AT1hLTTVeF6bcMajobSgIYTvQnoJsN0-BP-fn6k_rpErWjOdnjZTDHrpwC3lS96zSJFZIOozRX9WW-w-"])
 
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }

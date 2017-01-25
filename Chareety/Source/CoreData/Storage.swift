@@ -142,6 +142,28 @@ struct Storage {
             if list.count > 0 {
                 //no created
                 let currentEntity:EntityCause = list.last!
+                currentEntity.id = item["id"] as? String
+                currentEntity.title = item["title"] as? String
+                currentEntity.urlImageCause = item["url_image_cause"] as! String?
+                currentEntity.type = Int16(item["type"] as! NSNumber)
+                currentEntity.total = item["total"] as? String
+                currentEntity.accumulated = Int32(item["Accumulated"] as! NSNumber)
+                currentEntity.percent = Double(item["percent"] as! NSNumber)
+                currentEntity.urlImageAmbassador = item["url_image_ambassador"] as? String
+                currentEntity.people = Int32(item["people"] as! NSNumber)
+                currentEntity.nameAbassador = item["name_ambassador"] as? String
+                
+                let moc =  Storage.shared.context
+                
+                do {
+                    try moc.save()
+                    return (currentEntity,false)
+                } catch {
+                    
+                    let nserror = error as NSError
+                    fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+                }
+
                 return (currentEntity,true)
             }else{
                 //create now
