@@ -20,8 +20,8 @@ class UserCollectionViewCell: UICollectionViewCell {
         
         view.frame = CGRect(x: 0, y: 0, width: (267.4/3)*valuePro, height: (267.4/3)*valuePro)
         self.addSubview(view)
-        
-        imageView.frame = CGRect(x: ((view.frame.size.width-64)*valuePro)/2, y:0*valuePro,width: 64*valuePro, height: 65.51*valuePro)
+        //65.51
+        imageView.frame = CGRect(x: ((view.frame.size.width-64)*valuePro)/2, y:0*valuePro,width: 64*valuePro, height: 64*valuePro)
         imageView.image = #imageLiteral(resourceName: "userList")
         imageView.layer.cornerRadius = imageView.frame.size.height/2
         imageView.layer.masksToBounds = true

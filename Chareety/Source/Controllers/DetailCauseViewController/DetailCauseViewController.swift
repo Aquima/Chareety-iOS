@@ -75,7 +75,7 @@ class DetailCauseViewController: UIViewController,PayPalPaymentDelegate {
         contentForm = UIScrollView()
         contentForm.frame =  CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height-(self.tabBarController?.tabBar.frame.size.height)!)
         
-        contentForm.contentSize = CGSize(width: self.view.frame.size.width, height: 781*valuePro)
+        contentForm.contentSize = CGSize(width: self.view.frame.size.width, height: 732.218*valuePro)
         self.view.addSubview(contentForm)
         
         drawBody(data: data)
@@ -93,26 +93,46 @@ class DetailCauseViewController: UIViewController,PayPalPaymentDelegate {
         
         let valuePro:CGFloat  = CGFloat(NSNumber.getPropotionalValueDevice())
         
-        let imageView = UIImageView(image: #imageLiteral(resourceName: "CharetyAppLogo"))
         
-        imageView.frame = CGRect(x: (self.view.frame.size.width-157.541*valuePro)/2, y: 29*valuePro, width: 157.541*valuePro, height: 157.754*valuePro)
-        self.contentForm.addSubview(imageView)
+        let lblTitle1 = UILabel()
+        lblTitle1.frame = CGRect(x:(self.view.frame.size.width-56*valuePro)/2, y:33*valuePro, width:56*valuePro, height: 17.37*valuePro)
+        lblTitle1.font = UIFont (name: "Avenir", size: 14.45*valuePro)
+        lblTitle1.textColor = UIColor.init(hexString: "4d4d4d")
+        lblTitle1.text = "Detalle"
+        lblTitle1.textAlignment = NSTextAlignment.center
+        self.contentForm.addSubview(lblTitle1)
+        
+        
+        let view = UIView()
+        view.frame = CGRect(x: (self.view.frame.size.width-293.227*valuePro)/2, y: 73.051*valuePro, width: 293.227*valuePro, height: 132.782*valuePro)
+        self.contentForm.addSubview(view)
+        
+        
+        let imageView = UIImageView()
+        imageView.frame = CGRect(x: 0, y: 0, width: 293.227*valuePro, height: 132.782*valuePro)
+        //imageView.frame = CGRect(x: (view.frame.size.width-293.227*valuePro)/2, y: 73.051*valuePro, width: 293.227*valuePro, height: 132.782*valuePro)
+        imageView.sd_setImage(with: URL.init(string: data["url_image_cause"] as! String))
+        view.addSubview(imageView)
+        
         
         let lblTitle = UILabel()
-        lblTitle.frame =  CGRect(x: (self.view.frame.size.width-280*valuePro)/2, y: 226*valuePro, width: 280*valuePro, height: 38*valuePro)
+        lblTitle.frame =  CGRect(x: (view.frame.size.width-280*valuePro)/2, y: 5*valuePro, width: 280*valuePro, height: 42*valuePro)
         lblTitle.font = UIFont (name: "Avenir", size: 12.8*valuePro)
-        lblTitle.textColor = UIColor.init(hexString: "1A1A1A")
+        lblTitle.textColor = UIColor.white
         lblTitle.text = data["title"] as! String?//"Ayuda a los niños de las calles del PERU\ncon el apoyo de Mario Hart"
         lblTitle.textAlignment = NSTextAlignment.left
         lblTitle.numberOfLines = 2
         lblTitle.lineBreakMode = NSLineBreakMode.byWordWrapping
-        self.contentForm.addSubview(lblTitle)
+        view.addSubview(lblTitle)
+        view.addSubview(lblTitle)
         
+        
+        //49.424
         let view1 = UIView()
-        view1.frame = CGRect(x: (view.frame.size.width-294.4*valuePro)/2, y: 271.78*valuePro, width: 294.4*valuePro, height: 69.687*valuePro)
+        view1.frame = CGRect(x: (self.view.frame.size.width-293.227*valuePro)/2, y: 222.356*valuePro, width: 293.227*valuePro, height: 69.687*valuePro)
         view1.backgroundColor = UIColor.init(hexString: "f2f2f2")
         self.contentForm.addSubview(view1)
-        
+        //271.78
         let lblLabel = UILabel()
         lblLabel.frame = CGRect(x: 244.69*valuePro, y: 12*valuePro, width: 31.326*valuePro, height: 11.042*valuePro)
         lblLabel.font = UIFont(name: "Avenir-Light", size: 10*valuePro)
@@ -127,7 +147,6 @@ class DetailCauseViewController: UIViewController,PayPalPaymentDelegate {
         image.layer.cornerRadius = image.frame.size.height/2
         image.layer.masksToBounds = true
         view1.addSubview(image)
-        
         image.sd_setImage(with: URL.init(string: data["url_image_ambassador"] as! String))
         
         
@@ -136,16 +155,16 @@ class DetailCauseViewController: UIViewController,PayPalPaymentDelegate {
         view2.backgroundColor = UIColor.init(hexString: "b3b3b3")
         view1.addSubview(view2)
         let view3 = UIView()
-        view3.frame = CGRect(x:(view.frame.size.width-294.4*valuePro)/2,y:352.924*valuePro,width: 294.4*valuePro,height:2.56*valuePro)
+        view3.frame = CGRect(x:(self.view.frame.size.width-293.227*valuePro)/2,y:303.5*valuePro,width: 293.227*valuePro,height:2.56*valuePro)
         view3.backgroundColor = UIColor.init(hexString: "f2f2f2")
         self.contentForm.addSubview(view3)
         let view4 = UIView()
-        view4.frame = CGRect(x: (view.frame.size.width-1.28*valuePro)/2,y: 367.36*valuePro,width:1.28*valuePro,height: 41.813*valuePro)
+        view4.frame = CGRect(x: (self.view.frame.size.width-1.28*valuePro)/2,y: 317.936*valuePro,width:1.28*valuePro,height: 41.813*valuePro)
         view4.backgroundColor = UIColor.init(hexString: "f2f2f2")
         self.contentForm.addSubview(view4)
         
         let lblLabel2 = UILabel()
-        lblLabel2.frame = CGRect(x: 25.173*valuePro, y: 367.36*valuePro, width: 97.221*valuePro, height: 12.247*valuePro)
+        lblLabel2.frame = CGRect(x: 25.173*valuePro, y: 317.936*valuePro, width: 97.221*valuePro, height: 12.247*valuePro)
         lblLabel2.font = UIFont(name: "Avenir-Light", size: 11.09*valuePro)
         lblLabel2.textColor = UIColor.init(hexString: "333333")
         lblLabel2.textAlignment = NSTextAlignment.left
@@ -153,19 +172,19 @@ class DetailCauseViewController: UIViewController,PayPalPaymentDelegate {
         self.contentForm.addSubview(lblLabel2)
         
         let image2 = UIImageView()
-        image2.frame = CGRect(x: 22.923*valuePro, y: 384*valuePro, width: 30.293*valuePro, height: 30.293*valuePro )
+        image2.frame = CGRect(x: 22.923*valuePro, y: 334.576*valuePro, width: 30.293*valuePro, height: 30.293*valuePro )
         image2.image = #imageLiteral(resourceName: "userList")
         image2.layer.cornerRadius = image.frame.size.height/2
         image2.layer.masksToBounds = true
         self.contentForm.addSubview(image2)
         let image3 = UIImageView()
-        image3.frame = CGRect(x: 67.584*valuePro, y: 384*valuePro, width: 30.293*valuePro, height: 30.293*valuePro )
+        image3.frame = CGRect(x: 67.584*valuePro, y: 334.576*valuePro, width: 30.293*valuePro, height: 30.293*valuePro )
         image3.image = #imageLiteral(resourceName: "userList")
         image3.layer.cornerRadius = image.frame.size.height/2
         image3.layer.masksToBounds = true
         self.contentForm.addSubview(image3)
         let image4 = UIImageView()
-        image4.frame = CGRect(x: 111.582*valuePro, y: 384*valuePro, width: 30.293*valuePro, height: 30.293*valuePro )
+        image4.frame = CGRect(x: 111.582*valuePro, y: 334.576*valuePro, width: 30.293*valuePro, height: 30.293*valuePro )
         image4.image = #imageLiteral(resourceName: "userList")
         image4.layer.cornerRadius = image.frame.size.height/2
         image4.layer.masksToBounds = true
@@ -173,7 +192,7 @@ class DetailCauseViewController: UIViewController,PayPalPaymentDelegate {
         
         
         let shadowProgress:UIView = UIView()
-        shadowProgress.frame = CGRect(x: 170.24*valuePro,y: 380.16*valuePro,width:126.293*valuePro,height:10.24*valuePro)
+        shadowProgress.frame = CGRect(x: 170.24*valuePro,y: 330.736*valuePro,width:126.293*valuePro,height:10.24*valuePro)
         shadowProgress.backgroundColor = UIColor.init(hexString: "e6e6e6")
         self.contentForm.addSubview(shadowProgress)
         
@@ -184,7 +203,7 @@ class DetailCauseViewController: UIViewController,PayPalPaymentDelegate {
         shadowProgress.addSubview(percentProgress)
         
         let lblLabel3 = UILabel()
-        lblLabel3.frame = CGRect(x: 170.24*valuePro, y: 393.09*valuePro , width: 100*valuePro, height: 10.75*valuePro)
+        lblLabel3.frame = CGRect(x: 170.24*valuePro, y: 343.666*valuePro , width: 100*valuePro, height: 10.75*valuePro)
         lblLabel3.font = UIFont(name: "Avenir-Light", size: 11.09*valuePro)
         lblLabel3.textColor = UIColor.init(hexString: "f93d53")
 
@@ -193,7 +212,7 @@ class DetailCauseViewController: UIViewController,PayPalPaymentDelegate {
         
         
         let lblTitle2 = UILabel()
-        lblTitle2.frame = CGRect(x: (view.frame.size.width-161.5*valuePro)/2, y: 435.52*valuePro, width: 161.5*valuePro, height: 15.15*valuePro)
+        lblTitle2.frame = CGRect(x: (self.view.frame.size.width-161.5*valuePro)/2, y: 386.096*valuePro, width: 161.5*valuePro, height: 15.15*valuePro)
         lblTitle2.font = UIFont(name: "Avenir-Light", size: 12.8*valuePro)
         lblTitle2.textColor = UIColor.init(hexString: "333333")
         lblTitle2.text = "Acerca de este Proyecto"
@@ -201,7 +220,7 @@ class DetailCauseViewController: UIViewController,PayPalPaymentDelegate {
         self.contentForm.addSubview(lblTitle2)
         
         let txtvTermsContent = UITextView()
-        txtvTermsContent.frame =  CGRect(x: (view.frame.size.width-270.52*valuePro)/2, y: 461.82*valuePro, width: 270.52*valuePro, height: 300.426*valuePro - (self.tabBarController?.tabBar.frame.height)!)
+        txtvTermsContent.frame =  CGRect(x: (self.view.frame.size.width-270.52*valuePro)/2, y: 412.396*valuePro, width: 270.52*valuePro, height: 300.426*valuePro - (self.tabBarController?.tabBar.frame.height)!)
         txtvTermsContent.font = UIFont (name: "Avenir-Light", size: 10.24*valuePro)
         txtvTermsContent.textColor = UIColor.init(hexString: "4d4d4d")
         txtvTermsContent.textAlignment = NSTextAlignment.center
@@ -211,7 +230,7 @@ class DetailCauseViewController: UIViewController,PayPalPaymentDelegate {
         self.contentForm.addSubview(txtvTermsContent)
         
         let btnDonate = UIButton()
-        btnDonate.frame =  CGRect(x: (self.view.frame.size.width-290.909*valuePro)/2, y: 737.707*valuePro, width: 290.909*valuePro, height: 35*valuePro)
+        btnDonate.frame =  CGRect(x: (self.view.frame.size.width-290.909*valuePro)/2, y: 688.283*valuePro, width: 290.909*valuePro, height: 35*valuePro)
         btnDonate.titleLabel?.font = UIFont (name: "Avenir-Light", size: 13*valuePro)
         btnDonate.setTitle("Donar Ahora",for: UIControlState.normal)
         btnDonate.layer.borderColor = UIColor.init(hexString: "f93d53").cgColor
@@ -303,6 +322,7 @@ class DetailCauseViewController: UIViewController,PayPalPaymentDelegate {
 
     // MARK: Single Payment
     func donateAction(_ sender: UIButton) {
+        
         // Remove our last completed payment, just for demo purposes.
         resultText = ""
         
